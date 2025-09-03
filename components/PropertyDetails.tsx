@@ -1,0 +1,137 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { propertyConfig } from '@/config/property.config';
+import { Bed, Bath, Car, Maximize, Calendar, Home, MapPin } from 'lucide-react';
+
+export default function PropertyDetails() {
+  const { features, location, description, amenities } = propertyConfig;
+
+  const formatPrice = (price: number, currency: string) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: currency === 'USD' ? 'USD' : 'BRL',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
+  };
+
+  return (
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-4 text-center">
+        {/* Título */}
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-3xl md:text-4xl font-playfair font-bold text-gray-900 mb-4"
+        >
+          Características
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="text-lg text-gray-600 mb-12 max-w-3xl mx-auto"
+        >
+          {description}
+        </motion.p>
+
+        {/* Cards de características */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="bg-gray-50 p-6 rounded-lg text-center"
+          >
+            <Bed className="w-8 h-8 mx-auto mb-3 text-accent" />
+            <div className="text-2xl font-bold text-gray-900">{features.bedrooms}</div>
+            <div className="text-sm text-gray-600">Dormitórios</div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="bg-gray-50 p-6 rounded-lg text-center"
+          >
+            <Bath className="w-8 h-8 mx-auto mb-3 text-accent" />
+            <div className="text-2xl font-bold text-gray-900">{features.bathrooms}</div>
+            <div className="text-sm text-gray-600">Banheiros</div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="bg-gray-50 p-6 rounded-lg text-center"
+          >
+            <Maximize className="w-8 h-8 mx-auto mb-3 text-accent" />
+            <div className="text-2xl font-bold text-gray-900">{features.area}</div>
+            <div className="text-sm text-gray-600">{features.areaUnit}</div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="bg-gray-50 p-6 rounded-lg text-center"
+          >
+            <Car className="w-8 h-8 mx-auto mb-3 text-accent" />
+            <div className="text-2xl font-bold text-gray-900">{features.parking}</div>
+            <div className="text-sm text-gray-600">Vagas</div>
+          </motion.div>
+        </div>
+
+        {/* Informações adicionais */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {features.yearBuilt && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-primary/5 p-4 rounded-lg text-center"
+            >
+              <Calendar className="w-6 h-6 mx-auto mb-2 text-primary" />
+              <div className="font-semibold text-gray-900">Construído em {features.yearBuilt}</div>
+            </motion.div>
+          )}
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="bg-secondary/5 p-4 rounded-lg text-center"
+          >
+            <Home className="w-6 h-6 mx-auto mb-2 text-secondary" />
+            <div className="font-semibold text-gray-900 capitalize">
+              {features.propertyType === 'apartment' ? 'Apartamento' : features.propertyType}
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="bg-accent/5 p-4 rounded-lg text-center"
+          >
+            <MapPin className="w-6 h-6 mx-auto mb-2 text-accent" />
+            <div className="font-semibold text-gray-900">{location.city}</div>
+            <div className="text-sm text-gray-600">{location.state}</div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}

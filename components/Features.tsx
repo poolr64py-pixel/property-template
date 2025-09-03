@@ -1,0 +1,23 @@
+'use client';
+
+import { PropertyConfig } from '@/config/property.config';
+
+interface FeaturesProps {
+  features: PropertyConfig['features'];
+}
+
+export default function Features({ features }: FeaturesProps) {
+  return (
+    <section className="p-6 bg-gray-50 rounded-2xl shadow-sm my-6">
+      <h2 className="text-2xl font-bold mb-4">Características</h2>
+      <ul className="list-disc list-inside space-y-2">
+        <li>{features.bedrooms} dormitórios</li>
+        <li>{features.bathrooms} banheiros</li>
+        <li>{features.area} {features.areaUnit}</li>
+        <li>{features.parking} vaga(s) de garagem</li>
+        {features.yearBuilt && <li>Construído em {features.yearBuilt}</li>}
+        <li>Tipo: {features.propertyType}</li>
+      </ul>
+    </section>
+  );
+}
