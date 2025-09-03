@@ -1,9 +1,8 @@
 'use client';
-
 import { useState, useEffect } from 'react';
-import { Header } from '../components/Header';
-import { Footer } from '../components/Footer';
-import { Navigation, Breadcrumb, ContextMenu } from '../components/Navigation';
+import { Header } from '../components/layout/Header';
+import { Footer } from '../components/layout/Footer';
+import { Navigation, Breadcrumb, ContextMenu } from '../components/layout/Navigation';
 
 // Tipos simples
 type Locale = 'pt' | 'en' | 'es' | 'de';
