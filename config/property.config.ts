@@ -139,12 +139,12 @@ export const propertyConfig: PropertyConfig = {
   },
   
   agent: {
-    name: "Maria Silva",
-    phone: "+595 21 123456",
-    email: "maria@imobiliaria.com",
-    whatsapp: "+595981234567",
-    photo: "/images/agent.jpg"
-  },
+  name: "Roberto de Moura",
+  phone: "+595 994 718400",
+  email: "robertodemoura@remax.com.py",
+  whatsapp: "+595994718400",
+  photo: "/images/agent.jpg"
+},
   
   seo: {
     metaTitle: "Apartamento de Luxo Las Mercedes - 3 Dormitórios | Venda/Aluguel",

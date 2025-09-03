@@ -1,0 +1,54 @@
+{
+  "brand": {
+    "name": "Mehrsprachiges System"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "save": "Speichern",
+    "currentLanguage": "Aktuelle Sprache"
+  },
+  "nav": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "services": "Dienstleistungen",
+    "products": "Produkte"
+  },
+  "home": {
+    "title": "Professionelles Übersetzungssystem",
+    "subtitle": "Komplette Lösung für Internationalisierung mit React und Next.js. Unterstützung für mehrere Sprachen, intelligenter Cache und moderne Oberfläche.",
+    "cta": {
+      "primary": "Jetzt Beginnen",
+      "secondary": "Dokumentation Ansehen"
+    }
+  },
+  "features": {
+    "title": "Hauptmerkmale",
+    "subtitle": "Alles was Sie für ein robustes mehrsprachiges System brauchen",
+    "items": {
+      "1": {
+        "icon": "🚀",
+        "title": "Optimierte Leistung",
+        "description": "Intelligenter Cache, lazy Loading und Optimierungen für maximale Leistung"
+      },
+      "2": {
+        "icon": "🌍",
+        "title": "Mehrere Sprachen",
+        "description": "Vollständige Unterstützung für Portugiesisch, Englisch, Spanisch und Deutsch mit einfacher Erweiterung"
+      },
+      "3": {
+        "icon": "⚙️",
+        "title": "Einfache Wartung",
+        "description": "Saubere Architektur, TypeScript-Typisierung und wiederverwendbare Komponenten"
+      }
+    }
+  },
+  "footer": {
+    "copyright": "Alle Rechte vorbehalten",
+    "poweredBy": "Powered by Next.js & React"
+  }
+}

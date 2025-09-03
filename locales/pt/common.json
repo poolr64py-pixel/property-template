@@ -1,0 +1,96 @@
+{
+  "brand": {
+    "name": "Sistema Multilíngue",
+    "description": "Solução completa para internacionalização com React e Next.js. Componentes reutilizáveis, cache inteligente e design moderno."
+  },
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Salvar",
+    "currentLanguage": "Idioma atual",
+    "backToTop": "Voltar ao Topo",
+    "menu": "Menu",
+    "close": "Fechar"
+  },
+  "nav": {
+    "home": "Início",
+    "about": "Sobre",
+    "contact": "Contato",
+    "services": "Serviços",
+    "products": "Produtos",
+    "portfolio": "Portfólio",
+    "blog": "Blog",
+    "help": "Ajuda",
+    "documentation": "Documentação"
+  },
+  "home": {
+    "title": "Sistema de Tradução Profissional",
+    "subtitle": "Solução completa para internacionalização com React e Next.js. Suporte a múltiplos idiomas, cache inteligente e interface moderna.",
+    "cta": {
+      "primary": "Começar Agora",
+      "secondary": "Ver Documentação"
+    }
+  },
+  "features": {
+    "title": "Recursos Principais",
+    "subtitle": "Tudo que você precisa para um sistema multilíngue robusto",
+    "items": {
+      "1": {
+        "icon": "🚀",
+        "title": "Performance Otimizada",
+        "description": "Cache inteligente, carregamento lazy e otimizações para máxima performance"
+      },
+      "2": {
+        "icon": "🌍",
+        "title": "Múltiplos Idiomas",
+        "description": "Suporte completo a português, inglês, espanhol e alemão com fácil expansão"
+      },
+      "3": {
+        "icon": "⚙️",
+        "title": "Fácil Manutenção",
+        "description": "Arquitetura limpa, tipagem TypeScript e componentes reutilizáveis"
+      }
+    }
+  },
+  "footer": {
+    "copyright": "Todos os direitos reservados",
+    "poweredBy": "Powered by Next.js & React",
+    "sections": {
+      "company": {
+        "title": "Empresa",
+        "about": "Sobre Nós",
+        "team": "Nossa Equipe",
+        "careers": "Carreiras",
+        "news": "Notícias"
+      },
+      "resources": {
+        "title": "Recursos",
+        "documentation": "Documentação",
+        "tutorials": "Tutoriais",
+        "examples": "Exemplos",
+        "community": "Comunidade"
+      },
+      "support": {
+        "title": "Suporte",
+        "help": "Central de Ajuda",
+        "contact": "Contato",
+        "status": "Status do Sistema",
+        "feedback": "Feedback"
+      }
+    }
+  },
+  "demo": {
+    "title": "Demonstração dos Componentes",
+    "subtitle": "Veja todos os componentes reutilizáveis em ação",
+    "components": {
+      "header": "Header Dinâmico",
+      "navigation": "Menu de Navegação", 
+      "footer": "Footer Completo",
+      "breadcrumb": "Breadcrumb",
+      "contextMenu": "Menu de Contexto"
+    }
+  }
+}

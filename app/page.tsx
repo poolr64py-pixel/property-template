@@ -1,177 +1,423 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { propertyConfig } from '@/config/property.config';
-import { MapPin, Bed, Bath, Car, Maximize, Calendar, Home, Phone, Mail, MessageCircle, User, Check } from 'lucide-react';
-import OptimizedImage from '@/components/OptimizedImage';
+import { useState, useEffect } from 'react';
+import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
+import { Navigation, Breadcrumb, ContextMenu } from '../components/Navigation';
 
-export default function PropertyPage() {
-  const { title, subtitle, description, price, location, features, images, amenities, agent } = propertyConfig;
+// Tipos simples
+type Locale = 'pt' | 'en' | 'es' | 'de';
 
-  const formatPrice = (price: number, currency: string) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: currency === 'USD' ? 'USD' : 'BRL',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(price);
+const LOCALE_FLAGS = {
+  pt: '🇧🇷',
+  en: '🇺🇸',
+  es: '🇪🇸', 
+  de: '🇩🇪'
+};
+
+const LOCALE_NAMES = {
+  pt: 'Português',
+  en: 'English', 
+  es: 'Español',
+  de: 'Deutsch'
+};
+
+// Função para carregar traduções
+async function loadTranslations(locale: Locale) {
+  try {
+    let module;
+    switch (locale) {
+      case 'en':
+        module = await import('../locales/en/common.json');
+        break;
+      case 'es':
+        module = await import('../locales/es/common.json');
+        break;
+      case 'de':
+        module = await import('../locales/de/common.json');
+        break;
+      default:
+        module = await import('../locales/pt/common.json');
+    }
+    return module.default;
+  } catch (error) {
+    console.error('Error loading translations:', error);
+    return {};
+  }
+}
+
+function getNestedValue(obj: any, path: string): string {
+  return path.split('.').reduce((curr, key) => curr?.[key], obj) || path;
+}
+
+export default function HomePage() {
+  const [locale, setLocale] = useState<Locale>('pt');
+  const [translations, setTranslations] = useState<any>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentSection, setCurrentSection] = useState('home');
+  const [contextMenu, setContextMenu] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+  }>({ visible: false, x: 0, y: 0 });
+
+  useEffect(() => {
+    const load = async () => {
+      setIsLoading(true);
+      const data = await loadTranslations(locale);
+      setTranslations(data);
+      setIsLoading(false);
+    };
+    load();
+  }, [locale]);
+
+  const t = (key: string): string => {
+    if (isLoading) return key;
+    return getNestedValue(translations, key);
   };
 
-  const handleWhatsAppClick = () => {
-    const message = encodeURIComponent(`Olá! Tenho interesse no imóvel: ${title}. Gostaria de agendar uma visita.`);
-    const whatsappNumber = agent.whatsapp?.replace(/[^\d]/g, '');
-    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
+  const switchLanguage = (newLocale: Locale) => {
+    setLocale(newLocale);
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header simples */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">{agent.name}</h1>
-          <button 
-            onClick={handleWhatsAppClick}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2"
-          >
-            <MessageCircle className="w-4 h-4" />
-            <span>WhatsApp</span>
-          </button>
-        </div>
-      </header>
+  // Dados para os componentes
+  const navigationItems = [
+    {
+      key: 'home',
+      label: t('nav.home'),
+      icon: '🏠',
+      isActive: currentSection === 'home',
+      onClick: () => setCurrentSection('home')
+    },
+    {
+      key: 'about',
+      label: t('nav.about'),
+      icon: '📋',
+      isActive: currentSection === 'about',
+      onClick: () => setCurrentSection('about')
+    },
+    {
+      key: 'services',
+      label: t('nav.services'),
+      icon: '⚙️',
+      isActive: currentSection === 'services',
+      onClick: () => setCurrentSection('services'),
+      children: [
+        {
+          key: 'web-dev',
+          label: 'Desenvolvimento Web',
+          onClick: () => setCurrentSection('web-dev')
+        },
+        {
+          key: 'mobile-dev',
+          label: 'Desenvolvimento Mobile',
+          onClick: () => setCurrentSection('mobile-dev')
+        }
+      ]
+    },
+    {
+      key: 'contact',
+      label: t('nav.contact'),
+      icon: '📞',
+      isActive: currentSection === 'contact',
+      onClick: () => setCurrentSection('contact')
+    }
+  ];
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
-          {/* Coluna da imagem - tamanho controlado */}
-          <div className="space-y-6">
-            <div className="relative h-96 rounded-xl overflow-hidden">
-              <OptimizedImage
-                src={images.hero}
-                alt={title}
-                fill
-                priority
-                className="object-cover"
-              />
-            </div>
-            
-            {/* Galeria compacta */}
-            <div className="grid grid-cols-4 gap-2">
-              {images.gallery.slice(0, 4).map((image, index) => (
-                <div key={index} className="relative h-20 rounded-lg overflow-hidden">
-                  <OptimizedImage
-                    src={image}
-                    alt={`Foto ${index + 1}`}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+  const breadcrumbItems = [
+    { label: t('nav.home'), onClick: () => setCurrentSection('home') },
+    { label: t('demo.title'), isActive: true }
+  ];
 
-          {/* Coluna das informações */}
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{title}</h1>
-              <p className="text-gray-600 mb-4">{subtitle}</p>
-              <div className="flex items-center text-gray-500">
-                <MapPin className="w-4 h-4 mr-1" />
-                <span>{location.address}, {location.city}</span>
-              </div>
-            </div>
+  const footerSections = [
+    {
+      title: t('footer.sections.company.title'),
+      links: [
+        { key: 'about', label: t('footer.sections.company.about'), onClick: () => setCurrentSection('about') },
+        { key: 'team', label: t('footer.sections.company.team'), onClick: () => alert('Em desenvolvimento') },
+        { key: 'careers', label: t('footer.sections.company.careers'), onClick: () => alert('Em desenvolvimento') }
+      ]
+    },
+    {
+      title: t('footer.sections.resources.title'),
+      links: [
+        { key: 'docs', label: t('footer.sections.resources.documentation'), onClick: () => alert('Documentação') },
+        { key: 'tutorials', label: t('footer.sections.resources.tutorials'), onClick: () => alert('Tutoriais') },
+        { key: 'examples', label: t('footer.sections.resources.examples'), onClick: () => alert('Exemplos') }
+      ]
+    },
+    {
+      title: t('footer.sections.support.title'),
+      links: [
+        { key: 'help', label: t('footer.sections.support.help'), onClick: () => alert('Central de Ajuda') },
+        { key: 'contact', label: t('footer.sections.support.contact'), onClick: () => setCurrentSection('contact') },
+        { key: 'feedback', label: t('footer.sections.support.feedback'), onClick: () => alert('Feedback') }
+      ]
+    }
+  ];
 
-            {/* Preço em destaque */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border">
-              {price.sale && (
-                <div className="mb-2">
-                  <span className="text-sm text-gray-500">Venda:</span>
-                  <div className="text-2xl font-bold text-green-600">
-                    {formatPrice(price.sale, price.currency)}
-                  </div>
-                </div>
-              )}
-              {price.rent && (
-                <div>
-                  <span className="text-sm text-gray-500">Aluguel:</span>
-                  <div className="text-xl font-semibold text-blue-600">
-                    {formatPrice(price.rent, price.currency)}/mês
-                  </div>
-                </div>
-              )}
-            </div>
+  const socialLinks = [
+    { name: 'GitHub', icon: '🐱', url: 'https://github.com' },
+    { name: 'LinkedIn', icon: '💼', url: 'https://linkedin.com' },
+    { name: 'Twitter', icon: '🐦', url: 'https://twitter.com' }
+  ];
 
-            {/* Características em grid compacto */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white p-4 rounded-lg shadow-sm text-center">
-                <Bed className="w-6 h-6 mx-auto mb-2 text-blue-600" />
-                <div className="font-semibold">{features.bedrooms}</div>
-                <div className="text-sm text-gray-500">Dormitórios</div>
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm text-center">
-                <Bath className="w-6 h-6 mx-auto mb-2 text-blue-600" />
-                <div className="font-semibold">{features.bathrooms}</div>
-                <div className="text-sm text-gray-500">Banheiros</div>
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm text-center">
-                <Maximize className="w-6 h-6 mx-auto mb-2 text-blue-600" />
-                <div className="font-semibold">{features.area}m²</div>
-                <div className="text-sm text-gray-500">Área</div>
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm text-center">
-                <Car className="w-6 h-6 mx-auto mb-2 text-blue-600" />
-                <div className="font-semibold">{features.parking}</div>
-                <div className="text-sm text-gray-500">Vagas</div>
-              </div>
-            </div>
+  const contextMenuItems = [
+    { key: 'copy', label: 'Copiar', icon: '📋', onClick: () => alert('Copiado!') },
+    { key: 'share', label: 'Compartilhar', icon: '🔗', onClick: () => alert('Compartilhado!') },
+    { key: 'print', label: 'Imprimir', icon: '🖨️', onClick: () => window.print() }
+  ];
 
-            {/* Botões de ação */}
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                onClick={handleWhatsAppClick}
-                className="bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold"
-              >
-                Agendar Visita
-              </button>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold">
-                Mais Informações
-              </button>
-            </div>
-          </div>
-        </div>
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setContextMenu({
+      visible: true,
+      x: e.clientX,
+      y: e.clientY
+    });
+  };
 
-        {/* Seções adicionais mais compactas */}
-        <div className="mt-12 space-y-8">
-          
-          {/* Descrição */}
-          <div className="bg-white p-6 rounded-xl shadow-sm">
-            <h2 className="text-2xl font-bold mb-4">Sobre o Imóvel</h2>
-            <p className="text-gray-600 leading-relaxed">{description}</p>
-          </div>
-
-          {/* Comodidades */}
-          <div className="bg-white p-6 rounded-xl shadow-sm">
-            <h2 className="text-2xl font-bold mb-4">Comodidades</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {amenities.map((amenity, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <Check className="w-4 h-4 text-green-500" />
-                  <span className="text-sm">{amenity}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Contato */}
-          <div className="bg-white p-6 rounded-xl shadow-sm text-center">
-            <h2 className="text-2xl font-bold mb-4">Contato</h2>
-            <div className="space-y-2">
-              <p className="font-semibold">{agent.name}</p>
-              <p className="text-gray-600">{agent.phone}</p>
-              <p className="text-gray-600">{agent.email}</p>
-            </div>
-          </div>
+  if (isLoading) {
+    return (
+      <div style={{ 
+        minHeight: '100vh', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ 
+            width: '48px', 
+            height: '48px', 
+            border: '3px solid #f3f4f6',
+            borderTop: '3px solid #2563eb',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 16px'
+          }}></div>
+          <p>{t('common.loading')}</p>
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div style={{ 
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #e0e7ff 100%)',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      {/* Header Reutilizável */}
+      <Header
+        brandName={t('brand.name')}
+        currentLocale={locale}
+        onLanguageChange={switchLanguage}
+        navigationItems={navigationItems}
+        showLanguageSelector={true}
+      />
+
+      {/* Breadcrumb */}
+      <div style={{ 
+        maxWidth: '1200px', 
+        margin: '0 auto', 
+        padding: '20px',
+        width: '100%'
+      }}>
+        <Breadcrumb items={breadcrumbItems} />
+      </div>
+
+      {/* Conteúdo Principal */}
+      <main 
+        style={{ 
+          maxWidth: '1200px', 
+          margin: '0 auto', 
+          padding: '0 20px 40px',
+          flex: 1,
+          width: '100%'
+        }}
+        onContextMenu={handleContextMenu}
+      >
+        {/* Hero Section */}
+        <div style={{ 
+          textAlign: 'center',
+          background: 'white',
+          padding: '60px 40px',
+          borderRadius: '15px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+          marginBottom: '40px'
+        }}>
+          <h1 style={{ 
+            fontSize: '48px', 
+            fontWeight: 'bold', 
+            color: '#111827',
+            marginBottom: '20px'
+          }}>
+            {t('demo.title')}
+          </h1>
+          
+          <p style={{ 
+            fontSize: '18px', 
+            color: '#6b7280',
+            marginBottom: '30px',
+            maxWidth: '600px',
+            margin: '0 auto 30px'
+          }}>
+            {t('demo.subtitle')}
+          </p>
+        </div>
+
+        {/* Demonstração de Navegações */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '30px',
+          marginBottom: '40px'
+        }}>
+          {/* Navegação Horizontal */}
+          <div style={{
+            background: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+          }}>
+            <h3 style={{ marginBottom: '20px', color: '#111827' }}>
+              Navegação Horizontal
+            </h3>
+            <Navigation
+              items={navigationItems}
+              variant="horizontal"
+            />
+          </div>
+
+          {/* Navegação Vertical */}
+          <div style={{
+            background: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+          }}>
+            <h3 style={{ marginBottom: '20px', color: '#111827' }}>
+              Navegação Vertical
+            </h3>
+            <Navigation
+              items={navigationItems}
+              variant="vertical"
+            />
+          </div>
+
+          {/* Sidebar */}
+          <div style={{
+            background: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+          }}>
+            <h3 style={{ marginBottom: '20px', color: '#111827' }}>
+              Sidebar
+            </h3>
+            <Navigation
+              items={navigationItems}
+              variant="sidebar"
+            />
+          </div>
+        </div>
+
+        {/* Recursos */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '30px',
+          marginBottom: '40px'
+        }}>
+          {[1, 2, 3].map((i) => (
+            <div key={i} style={{ 
+              background: 'white', 
+              padding: '30px',
+              borderRadius: '15px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+              transition: 'transform 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+            >
+              <div style={{ 
+                fontSize: '48px',
+                marginBottom: '20px',
+                textAlign: 'center'
+              }}>
+                {t(`features.items.${i}.icon`)}
+              </div>
+              <h3 style={{ 
+                fontSize: '24px',
+                fontWeight: '600',
+                color: '#111827',
+                marginBottom: '15px',
+                textAlign: 'center'
+              }}>
+                {t(`features.items.${i}.title`)}
+              </h3>
+              <p style={{ 
+                color: '#6b7280',
+                lineHeight: '1.6',
+                textAlign: 'center'
+              }}>
+                {t(`features.items.${i}.description`)}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Status do Sistema */}
+        <div style={{ 
+          background: 'white', 
+          padding: '30px', 
+          borderRadius: '15px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+          textAlign: 'center'
+        }}>
+          <h3 style={{ color: '#16a34a', marginBottom: '15px', fontSize: '24px' }}>
+            ✅ Todos os Componentes Funcionando!
+          </h3>
+          <p style={{ fontSize: '18px', marginBottom: '10px' }}>
+            <strong>Idioma atual:</strong> {LOCALE_FLAGS[locale]} {LOCALE_NAMES[locale]}
+          </p>
+          <p style={{ color: '#6b7280' }}>
+            Clique com o botão direito em qualquer lugar para ver o menu de contexto
+          </p>
+        </div>
+      </main>
+
+      {/* Footer Reutilizável */}
+      <Footer
+        brandName={t('brand.name')}
+        description={t('brand.description')}
+        copyrightText={t('footer.copyright')}
+        poweredByText={t('footer.poweredBy')}
+        sections={footerSections}
+        socialLinks={socialLinks}
+        showBackToTop={true}
+      />
+
+      {/* Menu de Contexto */}
+      <ContextMenu
+        items={contextMenuItems}
+        isVisible={contextMenu.visible}
+        position={{ x: contextMenu.x, y: contextMenu.y }}
+        onClose={() => setContextMenu({ ...contextMenu, visible: false })}
+      />
+
+      {/* CSS para animações */}
+      <style jsx>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }
