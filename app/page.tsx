@@ -1,447 +1,471 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { Header } from '../components/layout/Header';
+import { Footer } from '../components/layout/Footer';
+import { PropertyCard } from '../components/property/PropertyCard';
+import { OptimizedImage } from '../components/ui/OptimizedImage';
 import { MapPin, Wifi, Car, Coffee, Waves, Users, Bed, Bath, Home, Phone, Mail } from 'lucide-react';
 
-export default function VillaSunshine() {
-  const [currentLang, setCurrentLang] = useState('pt');
-  const [isMobile, setIsMobile] = useState(false);
+type Locale = 'pt' | 'en' | 'es' | 'de';
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  const translations = {
-    pt: {
-      brand: 'Villa Sunshine',
-      tagline: 'Sua villa dos sonhos em Florianópolis',
-      hero: 'Villa Exclusiva com Vista para o Mar',
-      heroDesc: 'Desfrute de momentos inesquecíveis em nossa luxuosa villa com vista panorâmica para o mar.',
-      bookNow: 'Reserve Agora',
-      fromPrice: 'A partir de R$ 350/noite',
-      amenities: 'Comodidades',
-      location: 'Localização Privilegiada',
-      locationDesc: 'Localizada na paradisíaca Florianópolis, nossa villa oferece fácil acesso às melhores praias.',
-      contact: 'Entre em Contato',
-      phone: 'Telefone',
-      email: 'E-mail',
-      wifi: 'Wi-Fi Gratuito',
-      parking: 'Estacionamento',
-      kitchen: 'Cozinha Completa',
-      pool: 'Piscina Privativa'
-    },
-    en: {
-      brand: 'Villa Sunshine',
-      tagline: 'Your dream villa in Florianópolis',
-      hero: 'Exclusive Villa with Ocean View',
-      heroDesc: 'Enjoy unforgettable moments in our luxurious villa with panoramic ocean views.',
-      bookNow: 'Book Now',
-      fromPrice: 'Starting from $70/night',
-      amenities: 'Amenities',
-      location: 'Prime Location',
-      locationDesc: 'Located in paradisiacal Florianópolis, our villa offers easy access to the best beaches.',
-      contact: 'Get in Touch',
-      phone: 'Phone',
-      email: 'E-mail',
-      wifi: 'Free Wi-Fi',
-      parking: 'Parking',
-      kitchen: 'Full Kitchen',
-      pool: 'Private Pool'
-    },
-    es: {
-      brand: 'Villa Sunshine',
-      tagline: 'Tu villa soñada en Florianópolis',
-      hero: 'Villa Exclusiva con Vista al Mar',
-      heroDesc: 'Disfruta de momentos inolvidables en nuestra lujosa villa con vista panorámica.',
-      bookNow: 'Reservar Ahora',
-      fromPrice: 'Desde $70/noche',
-      amenities: 'Comodidades',
-      location: 'Ubicación Privilegiada',
-      locationDesc: 'Ubicada en la paradisíaca Florianópolis, nuestra villa ofrece fácil acceso.',
-      contact: 'Contactar',
-      phone: 'Teléfono',
-      email: 'E-mail',
-      wifi: 'Wi-Fi Gratuito',
-      parking: 'Estacionamiento',
-      kitchen: 'Cocina Completa',
-      pool: 'Piscina Privada'
-    },
-    de: {
-      brand: 'Villa Sunshine',
-      tagline: 'Ihre Traumvilla in Florianópolis',
-      hero: 'Exklusive Villa mit Meerblick',
-      heroDesc: 'Genießen Sie unvergessliche Momente in unserer luxuriösen Villa mit Panoramablick.',
-      bookNow: 'Jetzt Buchen',
-      fromPrice: 'Ab $70/Nacht',
-      amenities: 'Ausstattung',
-      location: 'Privilegierte Lage',
-      locationDesc: 'In dem paradiesischen Florianópolis gelegen, bietet unsere Villa einfachen Zugang.',
-      contact: 'Kontakt',
-      phone: 'Telefon',
-      email: 'E-Mail',
-      wifi: 'Kostenloses Wi-Fi',
-      parking: 'Parkplatz',
-      kitchen: 'Vollküche',
-      pool: 'Privater Pool'
+// Traduções usando a mesma estrutura dos componentes existentes
+const translations = {
+  pt: {
+    brand: 'Villa Sunshine',
+    tagline: 'Sua villa dos sonhos em Florianópolis',
+    hero: 'Villa Exclusiva com Vista para o Mar',
+    heroDesc: 'Desfrute de momentos inesquecíveis em nossa luxuosa villa com vista panorâmica para o mar, piscina privativa e todas as comodidades.',
+    bookNow: 'Reserve Agora',
+    fromPrice: 'A partir de R$ 350/noite',
+    amenities: 'Comodidades',
+    contact: 'Entre em Contato',
+    nav: {
+      home: 'Início',
+      about: 'Sobre',
+      contact: 'Contato'
     }
-  };
-
- const t = (key: string): string => {
-  const lang = currentLang as keyof typeof translations;
-  const langTranslations = translations[lang];
-  return (langTranslations as any)[key] || key;
+  },
+  en: {
+    brand: 'Villa Sunshine',
+    tagline: 'Your dream villa in Florianópolis',
+    hero: 'Exclusive Villa with Ocean View',
+    heroDesc: 'Enjoy unforgettable moments in our luxurious villa with panoramic ocean views, private pool and all amenities.',
+    bookNow: 'Book Now',
+    fromPrice: 'Starting from $70/night',
+    amenities: 'Amenities',
+    contact: 'Get in Touch',
+    nav: {
+      home: 'Home',
+      about: 'About',
+      contact: 'Contact'
+    }
+  },
+  es: {
+    brand: 'Villa Sunshine',
+    tagline: 'Tu villa soñada en Florianópolis',
+    hero: 'Villa Exclusiva con Vista al Mar',
+    heroDesc: 'Disfruta de momentos inolvidables en nuestra lujosa villa con vista panorámica al mar, piscina privada y todas las comodidades.',
+    bookNow: 'Reservar Ahora',
+    fromPrice: 'Desde $70/noche',
+    amenities: 'Comodidades',
+    contact: 'Contactar',
+    nav: {
+      home: 'Inicio',
+      about: 'Acerca',
+      contact: 'Contacto'
+    }
+  },
+  de: {
+    brand: 'Villa Sunshine',
+    tagline: 'Ihre Traumvilla in Florianópolis',
+    hero: 'Exklusive Villa mit Meerblick',
+    heroDesc: 'Genießen Sie unvergessliche Momente in unserer luxuriösen Villa mit Panoramablick auf das Meer, privatem Pool und allen Annehmlichkeiten.',
+    bookNow: 'Jetzt Buchen',
+    fromPrice: 'Ab $70/Nacht',
+    amenities: 'Ausstattung',
+    contact: 'Kontakt',
+    nav: {
+      home: 'Start',
+      about: 'Über uns',
+      contact: 'Kontakt'
+    }
+  }
 };
 
-  const styles = {
-    container: {
-  fontFamily: 'system-ui, sans-serif',
-  margin: 0,
-  padding: 0,
-  width: '100%',
-  overflowX: 'hidden' as const,
-  backgroundColor: 'white'
-},
-    header: {
-  backgroundColor: 'white',
-  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-  borderBottom: '1px solid #e5e7eb',
-  position: 'sticky' as const,
-  top: 0,
-  zIndex: 50,
-  width: '100%'
-},
-    headerContent: {
-      maxWidth: '1280px',
-      margin: '0 auto',
-      padding: isMobile ? '0 1rem' : '0 2rem',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      height: '64px',
-      flexWrap: 'wrap'
-    },
-    logo: {
-      fontSize: isMobile ? '1.25rem' : '1.5rem',
-      fontWeight: 'bold',
-      color: '#2563eb'
-    },
-    nav: {
-      display: isMobile ? 'none' : 'flex',
-      gap: '2rem'
-    },
-    langButtons: {
-      display: 'flex',
-      gap: '0.25rem',
-      flexWrap: 'wrap'
-    },
-    langButton: {
-      padding: '0.5rem',
-      border: 'none',
-      borderRadius: '0.25rem',
-      cursor: 'pointer',
-      fontSize: '0.75rem',
-      transition: 'all 0.2s',
-      minWidth: '40px'
-    },
-    hero: {
-      background: 'linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%)',
-      padding: isMobile ? '3rem 1rem' : '5rem 2rem',
-      width: '100%',
-      boxSizing: 'border-box'
-    },
-    heroContent: {
-      maxWidth: '1280px',
-      margin: '0 auto',
-      display: 'flex',
-      flexDirection: isMobile ? 'column' : 'row',
-      gap: isMobile ? '2rem' : '3rem',
-      alignItems: 'center'
-    },
-    heroText: {
-      flex: 1,
-      color: '#111827'
-    },
-    heroTitle: {
-      fontSize: isMobile ? '2rem' : '3rem',
-      fontWeight: 'bold',
-      marginBottom: '1.5rem',
-      lineHeight: '1.2'
-    },
-    heroDesc: {
-      fontSize: isMobile ? '1rem' : '1.25rem',
-      color: '#4b5563',
-      marginBottom: '1.5rem',
-      lineHeight: '1.6'
-    },
-    price: {
-      fontSize: isMobile ? '1.25rem' : '1.5rem',
-      fontWeight: '600',
-      color: '#2563eb',
-      marginBottom: '2rem'
-    },
-    button: {
-      backgroundColor: '#2563eb',
-      color: 'white',
-      padding: isMobile ? '0.75rem 1.5rem' : '1rem 2rem',
-      border: 'none',
-      borderRadius: '0.5rem',
-      fontSize: '1rem',
-      fontWeight: '600',
-      cursor: 'pointer',
-      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-      transition: 'all 0.2s',
-      width: isMobile ? '100%' : 'auto'
-    },
-    card: {
-      flex: isMobile ? 'none' : '0 0 400px',
-      width: isMobile ? '100%' : '400px',
-      background: 'linear-gradient(135deg, #60a5fa 0%, #2563eb 100%)',
-      borderRadius: '1rem',
-      padding: '2rem',
-      color: 'white',
-      boxShadow: '0 20px 25px rgba(0,0,0,0.15)'
-    },
-    cardTitle: {
-      fontSize: '1.5rem',
-      fontWeight: 'bold',
-      marginBottom: '1rem'
-    },
-    cardSubtitle: {
-      color: '#dbeafe',
-      marginBottom: '1.5rem',
-      fontSize: '0.9rem'
-    },
-    features: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: '1rem'
-    },
-    feature: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '0.5rem',
-      fontSize: '0.9rem'
-    },
-    section: {
-      padding: isMobile ? '3rem 1rem' : '5rem 2rem',
-      width: '100%',
-      boxSizing: 'border-box'
-    },
-    sectionContent: {
-      maxWidth: '1280px',
-      margin: '0 auto'
-    },
-    sectionTitle: {
-      fontSize: isMobile ? '1.5rem' : '2rem',
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginBottom: '3rem',
-      color: '#111827'
-    },
-    amenitiesGrid: {
-      display: 'grid',
-      gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
-      gap: '1rem'
-    },
-    amenityCard: {
-      display: 'flex',
-      alignItems: 'center',
-      padding: '1rem',
-      backgroundColor: 'white',
-      borderRadius: '0.5rem',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-      border: '1px solid #e5e7eb'
-    },
-    amenityIcon: {
-      width: '40px',
-      height: '40px',
-      backgroundColor: '#eff6ff',
-      borderRadius: '0.5rem',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginRight: '1rem',
-      flexShrink: 0
-    },
-    contactSection: {
-      backgroundColor: '#111827',
-      color: 'white'
-    },
-    contactGrid: {
-      display: 'grid',
-      gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
-      gap: '1rem',
-      marginBottom: '2rem'
-    },
-    contactCard: {
-      textAlign: 'center',
-      padding: '1.5rem',
-      backgroundColor: '#1f2937',
-      borderRadius: '0.5rem'
-    },
-    footer: {
-      backgroundColor: '#111827',
-      borderTop: '1px solid #374151',
-      padding: '2rem 1rem',
-      textAlign: 'center',
-      color: '#9ca3af'
+// Dados mock da propriedade usando os tipos existentes
+const propertyData = {
+  id: 'villa-sunshine-1',
+  type: 'villa' as const,
+  status: 'for-rent' as const,
+  featured: true,
+  location: {
+    address: 'Florianópolis, SC',
+    city: 'Florianópolis',
+    region: 'Santa Catarina',
+    country: 'Brasil',
+    zipCode: '88000-000',
+    coordinates: { lat: -27.5954, lng: -48.5480 }
+  },
+  specs: {
+    bedrooms: 4,
+    bathrooms: 3,
+    area: 250,
+    pool: true,
+    garden: true,
+    parking: true
+  },
+  pricing: {
+    rentPrice: 350,
+    currency: 'BRL'
+  }
+};
+
+const propertyContent = {
+  pt: {
+    title: 'Villa Sunshine - Vista para o Mar',
+    description: 'Villa luxuosa com vista panorâmica',
+    shortDescription: 'Villa exclusiva em Florianópolis'
+  },
+  en: {
+    title: 'Villa Sunshine - Ocean View',
+    description: 'Luxury villa with panoramic view',
+    shortDescription: 'Exclusive villa in Florianópolis'
+  },
+  es: {
+    title: 'Villa Sunshine - Vista al Mar',
+    description: 'Villa de lujo con vista panorámica',
+    shortDescription: 'Villa exclusiva en Florianópolis'
+  },
+  de: {
+    title: 'Villa Sunshine - Meerblick',
+    description: 'Luxusvilla mit Panoramablick',
+    shortDescription: 'Exklusive Villa in Florianópolis'
+  }
+};
+
+export default function HomePage() {
+  const [currentLocale, setCurrentLocale] = useState<Locale>('pt');
+
+  const t = (key: string): string => {
+    const keys = key.split('.');
+    let result: any = translations[currentLocale];
+    
+    for (const k of keys) {
+      result = result?.[k];
+      if (!result) break;
     }
+    
+    return result || key;
   };
 
-  const amenitiesList = [
-    { icon: Wifi, label: t('wifi') },
-    { icon: Car, label: t('parking') },
-    { icon: Coffee, label: t('kitchen') },
-    { icon: Waves, label: t('pool') }
-  ];
-
-  const languages = [
-    { code: 'pt', flag: '🇧🇷', name: 'PT' },
-    { code: 'en', flag: '🇺🇸', name: 'EN' },
-    { code: 'es', flag: '🇪🇸', name: 'ES' },
-    { code: 'de', flag: '🇩🇪', name: 'DE' }
+  const navigationItems = [
+    { key: 'home', label: t('nav.home'), onClick: () => console.log('Home') },
+    { key: 'about', label: t('nav.about'), onClick: () => console.log('About') },
+    { key: 'contact', label: t('nav.contact'), onClick: () => console.log('Contact') }
   ];
 
   return (
-    <div style={styles.container}>
-      {/* Header */}
-      <header style={styles.header}>
-        <div style={styles.headerContent}>
-          <h1 style={styles.logo}>{t('brand')}</h1>
-          
-          {!isMobile && (
-            <nav style={styles.nav}>
-              <a href="#inicio" style={{color: '#374151', textDecoration: 'none'}}>Início</a>
-              <a href="#sobre" style={{color: '#374151', textDecoration: 'none'}}>Sobre</a>
-              <a href="#contato" style={{color: '#374151', textDecoration: 'none'}}>Contato</a>
-            </nav>
-          )}
-
-          <div style={styles.langButtons}>
-            {languages.map(lang => (
-              <button
-                key={lang.code}
-                onClick={() => setCurrentLang(lang.code)}
-                style={{
-                  ...styles.langButton,
-                  backgroundColor: currentLang === lang.code ? '#eff6ff' : 'transparent',
-                  color: currentLang === lang.code ? '#2563eb' : '#6b7280'
-                }}
-              >
-                {lang.flag}
-              </button>
-            ))}
-          </div>
-        </div>
-      </header>
+    <div className="villa-homepage">
+      {/* Header usando o componente existente */}
+      <Header
+        brandName={t('brand')}
+        currentLocale={currentLocale}
+        onLanguageChange={setCurrentLocale}
+        navigationItems={navigationItems}
+        showLanguageSelector={true}
+      />
 
       {/* Hero Section */}
-      <section style={styles.hero}>
-        <div style={styles.heroContent}>
-          <div style={styles.heroText}>
-            <h2 style={styles.heroTitle}>{t('hero')}</h2>
-            <p style={styles.heroDesc}>{t('heroDesc')}</p>
-            <p style={styles.price}>{t('fromPrice')}</p>
-            <button 
-              style={styles.button}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#1d4ed8'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#2563eb'}
-            >
-              {t('bookNow')}
-            </button>
-          </div>
-          
-          <div style={styles.card}>
-            <h3 style={styles.cardTitle}>{t('brand')}</h3>
-            <p style={styles.cardSubtitle}>{t('tagline')}</p>
+      <section className="hero-section">
+        <div className="hero-container">
+          <div className="hero-content">
+            <div className="hero-text">
+              <h1 className="hero-title">{t('hero')}</h1>
+              <p className="hero-description">{t('heroDesc')}</p>
+              <p className="hero-price">{t('fromPrice')}</p>
+              <button className="cta-button">{t('bookNow')}</button>
+            </div>
             
-            <div style={styles.features}>
-              <div style={styles.feature}>
-                <Bed size={16} />
-                <span>4 Quartos</span>
-              </div>
-              <div style={styles.feature}>
-                <Bath size={16} />
-                <span>3 Banheiros</span>
-              </div>
-              <div style={styles.feature}>
-                <Users size={16} />
-                <span>8 Pessoas</span>
-              </div>
-              <div style={styles.feature}>
-                <Home size={16} />
-                <span>250m²</span>
-              </div>
+            <div className="hero-image">
+              <OptimizedImage
+                src="/images/villa-hero.jpg"
+                alt={t('hero')}
+                width={600}
+                height={400}
+                className="rounded-lg shadow-2xl"
+                style={{ objectFit: 'cover' }}
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Amenities */}
-      <section style={{...styles.section, backgroundColor: '#f9fafb'}}>
-        <div style={styles.sectionContent}>
-          <h3 style={styles.sectionTitle}>{t('amenities')}</h3>
+      {/* Property Card Section */}
+      <section className="property-showcase">
+        <div className="section-container">
+          <h2 className="section-title">Nossa Villa</h2>
           
-          <div style={styles.amenitiesGrid}>
-            {amenitiesList.map((amenity, index) => (
-              <div key={index} style={styles.amenityCard}>
-                <div style={styles.amenityIcon}>
-                  <amenity.icon size={20} color="#2563eb" />
-                </div>
-                <h4 style={{margin: 0, color: '#111827', fontWeight: '600'}}>{amenity.label}</h4>
-              </div>
-            ))}
+          <div className="property-card-container">
+            <PropertyCard
+              property={propertyData}
+              content={propertyContent[currentLocale]}
+              locale={currentLocale}
+              heroImage="/images/villa-main.jpg"
+              variant="featured"
+              onClick={() => console.log('Property clicked')}
+            />
           </div>
         </div>
       </section>
 
-      {/* Contact */}
-      <section style={{...styles.section, ...styles.contactSection}}>
-        <div style={styles.sectionContent}>
-          <h3 style={{...styles.sectionTitle, color: 'white'}}>{t('contact')}</h3>
+      {/* Amenities Section */}
+      <section className="amenities-section">
+        <div className="section-container">
+          <h2 className="section-title">{t('amenities')}</h2>
           
-          <div style={styles.contactGrid}>
-            <div style={styles.contactCard}>
-              <Phone size={24} color="#60a5fa" style={{marginBottom: '1rem'}} />
-              <h4 style={{marginBottom: '0.5rem', fontSize: '1rem'}}>{t('phone')}</h4>
-              <p style={{color: '#60a5fa', margin: 0, fontSize: '0.9rem'}}>+55 48 9999-9999</p>
+          <div className="amenities-grid">
+            <div className="amenity-card">
+              <Wifi className="amenity-icon" />
+              <h3>Wi-Fi Gratuito</h3>
             </div>
-            
-            <div style={styles.contactCard}>
-              <Mail size={24} color="#60a5fa" style={{marginBottom: '1rem'}} />
-              <h4 style={{marginBottom: '0.5rem', fontSize: '1rem'}}>{t('email')}</h4>
-              <p style={{color: '#60a5fa', margin: 0, fontSize: '0.9rem'}}>contato@villasunshine.com</p>
+            <div className="amenity-card">
+              <Car className="amenity-icon" />
+              <h3>Estacionamento</h3>
             </div>
-            
-            <div style={styles.contactCard}>
-              <MapPin size={24} color="#60a5fa" style={{marginBottom: '1rem'}} />
-              <h4 style={{marginBottom: '0.5rem', fontSize: '1rem'}}>Endereço</h4>
-              <p style={{color: '#60a5fa', margin: 0, fontSize: '0.9rem'}}>Florianópolis, SC</p>
+            <div className="amenity-card">
+              <Coffee className="amenity-icon" />
+              <h3>Cozinha Completa</h3>
             </div>
-          </div>
-
-          <div style={{textAlign: 'center'}}>
-            <button 
-              style={styles.button}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#1d4ed8'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#2563eb'}
-            >
-              {t('bookNow')}
-            </button>
+            <div className="amenity-card">
+              <Waves className="amenity-icon" />
+              <h3>Piscina Privativa</h3>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer style={styles.footer}>
-        <h4 style={{fontSize: '1.25rem', fontWeight: 'bold', color: '#60a5fa', marginBottom: '1rem'}}>{t('brand')}</h4>
-        <p style={{fontSize: '0.875rem'}}>© 2024 Villa Sunshine. Todos os direitos reservados.</p>
-      </footer>
+      {/* Contact Section */}
+      <section className="contact-section">
+        <div className="section-container">
+          <h2 className="section-title">{t('contact')}</h2>
+          
+          <div className="contact-grid">
+            <div className="contact-card">
+              <Phone className="contact-icon" />
+              <h3>Telefone</h3>
+              <p>+55 48 9999-9999</p>
+            </div>
+            <div className="contact-card">
+              <Mail className="contact-icon" />
+              <h3>E-mail</h3>
+              <p>contato@villasunshine.com</p>
+            </div>
+            <div className="contact-card">
+              <MapPin className="contact-icon" />
+              <h3>Localização</h3>
+              <p>Florianópolis, SC</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer usando o componente existente */}
+      <Footer
+        brandName={t('brand')}
+        copyrightText={`© 2024 ${t('brand')}. Todos os direitos reservados.`}
+      />
+
+      <style jsx>{`
+        .villa-homepage {
+          min-height: 100vh;
+          background: white;
+        }
+
+        .hero-section {
+          background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+          padding: 80px 20px;
+          min-height: 80vh;
+          display: flex;
+          align-items: center;
+        }
+
+        .hero-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          width: 100%;
+        }
+
+        .hero-content {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 60px;
+          align-items: center;
+        }
+
+        .hero-text {
+          max-width: 500px;
+        }
+
+        .hero-title {
+          font-size: 3.5rem;
+          font-weight: bold;
+          color: #111827;
+          margin-bottom: 24px;
+          line-height: 1.2;
+        }
+
+        .hero-description {
+          font-size: 1.25rem;
+          color: #4b5563;
+          margin-bottom: 24px;
+          line-height: 1.6;
+        }
+
+        .hero-price {
+          font-size: 1.75rem;
+          font-weight: 600;
+          color: #2563eb;
+          margin-bottom: 32px;
+        }
+
+        .cta-button {
+          background: #2563eb;
+          color: white;
+          padding: 16px 32px;
+          border: none;
+          border-radius: 8px;
+          font-size: 1.1rem;
+          font-weight: 600;
+          cursor: pointer;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+          background: #1d4ed8;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .section-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
+        }
+
+        .section-title {
+          font-size: 2.5rem;
+          font-weight: bold;
+          text-align: center;
+          margin-bottom: 48px;
+          color: #111827;
+        }
+
+        .property-showcase {
+          padding: 80px 20px;
+          background: white;
+        }
+
+        .property-card-container {
+          display: flex;
+          justify-content: center;
+        }
+
+        .amenities-section {
+          padding: 80px 20px;
+          background: #f9fafb;
+        }
+
+        .amenities-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 24px;
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        .amenity-card {
+          background: white;
+          padding: 32px 24px;
+          border-radius: 12px;
+          text-align: center;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+          transition: all 0.3s ease;
+        }
+
+        .amenity-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .amenity-icon {
+          width: 48px;
+          height: 48px;
+          color: #2563eb;
+          margin: 0 auto 16px;
+        }
+
+        .amenity-card h3 {
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: #111827;
+          margin: 0;
+        }
+
+        .contact-section {
+          padding: 80px 20px;
+          background: #111827;
+          color: white;
+        }
+
+        .contact-section .section-title {
+          color: white;
+        }
+
+        .contact-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 32px;
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        .contact-card {
+          background: #1f2937;
+          padding: 32px 24px;
+          border-radius: 12px;
+          text-align: center;
+        }
+
+        .contact-icon {
+          width: 48px;
+          height: 48px;
+          color: #60a5fa;
+          margin: 0 auto 16px;
+        }
+
+        .contact-card h3 {
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: white;
+          margin: 0 0 8px 0;
+        }
+
+        .contact-card p {
+          color: #60a5fa;
+          margin: 0;
+        }
+
+        @media (max-width: 768px) {
+          .hero-content {
+            grid-template-columns: 1fr;
+            gap: 40px;
+            text-align: center;
+          }
+          
+          .hero-title {
+            font-size: 2.5rem;
+          }
+          
+          .hero-description {
+            font-size: 1.1rem;
+          }
+          
+          .hero-price {
+            font-size: 1.5rem;
+          }
+          
+          .cta-button {
+            width: 100%;
+            max-width: 300px;
+          }
+          
+          .section-title {
+            font-size: 2rem;
+          }
+        }
+      `}</style>
     </div>
   );
 }
