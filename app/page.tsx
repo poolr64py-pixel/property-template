@@ -123,23 +123,79 @@ const propertyData = {
 const propertyContent = {
   pt: {
     title: 'Villa Sunshine - Vista para o Mar',
+    subtitle: 'Villa exclusiva em Florianópolis',
     description: 'Villa luxuosa com vista panorâmica para o mar, piscina privativa e todas as comodidades para uma estadia perfeita.',
-    shortDescription: 'Villa exclusiva em Florianópolis com vista para o mar'
+    highlights: ['Vista panorâmica para o mar', 'Piscina privativa', 'Jardim amplo', '2 vagas de garagem'],
+    rooms: {
+      livingRoom: 'Sala ampla com vista para o mar',
+      kitchen: 'Cozinha completa equipada',
+      masterBedroom: 'Suíte master com varanda',
+      bedrooms: '4 quartos espaçosos',
+      bathrooms: '3 banheiros completos',
+      outdoor: 'Área externa com piscina e jardim'
+    },
+    location: {
+      description: 'Localizada em área nobre de Florianópolis',
+      nearbyAttractions: ['Praia de Jurerê', 'Centro histórico', 'Shopping'],
+      transportation: ['Ônibus', 'Táxi', 'Carro próprio']
+    }
   },
   en: {
     title: 'Villa Sunshine - Ocean View',
+    subtitle: 'Exclusive villa in Florianópolis',
     description: 'Luxury villa with panoramic ocean view, private pool and all amenities for a perfect stay.',
-    shortDescription: 'Exclusive villa in Florianópolis with ocean view'
+    highlights: ['Panoramic ocean view', 'Private pool', 'Large garden', '2 parking spaces'],
+    rooms: {
+      livingRoom: 'Spacious living room with ocean view',
+      kitchen: 'Fully equipped kitchen',
+      masterBedroom: 'Master suite with balcony',
+      bedrooms: '4 spacious bedrooms',
+      bathrooms: '3 full bathrooms',
+      outdoor: 'Outdoor area with pool and garden'
+    },
+    location: {
+      description: 'Located in upscale area of Florianópolis',
+      nearbyAttractions: ['Jurerê Beach', 'Historic center', 'Shopping mall'],
+      transportation: ['Bus', 'Taxi', 'Private car']
+    }
   },
   es: {
     title: 'Villa Sunshine - Vista al Mar',
+    subtitle: 'Villa exclusiva en Florianópolis',
     description: 'Villa de lujo con vista panorámica al mar, piscina privada y todas las comodidades para una estancia perfecta.',
-    shortDescription: 'Villa exclusiva en Florianópolis con vista al mar'
+    highlights: ['Vista panorámica al mar', 'Piscina privada', 'Jardín amplio', '2 plazas de aparcamiento'],
+    rooms: {
+      livingRoom: 'Amplia sala con vista al mar',
+      kitchen: 'Cocina totalmente equipada',
+      masterBedroom: 'Suite principal con balcón',
+      bedrooms: '4 habitaciones amplias',
+      bathrooms: '3 baños completos',
+      outdoor: 'Área exterior con piscina y jardín'
+    },
+    location: {
+      description: 'Ubicada en zona exclusiva de Florianópolis',
+      nearbyAttractions: ['Playa Jurerê', 'Centro histórico', 'Centro comercial'],
+      transportation: ['Autobús', 'Taxi', 'Coche privado']
+    }
   },
   de: {
     title: 'Villa Sunshine - Meerblick',
+    subtitle: 'Exklusive Villa in Florianópolis',
     description: 'Luxusvilla mit Panoramablick auf das Meer, privatem Pool und allen Annehmlichkeiten für einen perfekten Aufenthalt.',
-    shortDescription: 'Exklusive Villa in Florianópolis mit Meerblick'
+    highlights: ['Panorama-Meerblick', 'Privater Pool', 'Großer Garten', '2 Parkplätze'],
+    rooms: {
+      livingRoom: 'Geräumiges Wohnzimmer mit Meerblick',
+      kitchen: 'Voll ausgestattete Küche',
+      masterBedroom: 'Master-Suite mit Balkon',
+      bedrooms: '4 geräumige Schlafzimmer',
+      bathrooms: '3 komplette Badezimmer',
+      outdoor: 'Außenbereich mit Pool und Garten'
+    },
+    location: {
+      description: 'In erstklassiger Lage von Florianópolis',
+      nearbyAttractions: ['Jurerê Strand', 'Historisches Zentrum', 'Einkaufszentrum'],
+      transportation: ['Bus', 'Taxi', 'Privatauto']
+    }
   }
 };
 
