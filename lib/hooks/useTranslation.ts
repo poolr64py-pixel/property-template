@@ -1,8 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-// Tipos
 export type Locale = 'pt' | 'en' | 'es' | 'de';
 
 export const LOCALES: Locale[] = ['pt', 'en', 'es', 'de'];
@@ -21,126 +20,82 @@ export const LOCALE_FLAGS = {
   de: '🇩🇪'
 } as const;
 
-interface TranslationContextType {
+// Traduções básicas
+const translations: Record<Locale, Record<string, string>> = {
+  pt: {
+    'brand.name': 'Villa Sunshine',
+    'common.loading': 'Carregando...',
+    'common.currentLanguage': 'Idioma atual',
+    'nav.home': 'Início',
+    'nav.about': 'Sobre',
+    'nav.contact': 'Contato'
+  },
+  en: {
+    'brand.name': 'Villa Sunshine',
+    'common.loading': 'Loading...',
+    'common.currentLanguage': 'Current Language',
+    'nav.home': 'Home',
+    'nav.about': 'About',
+    'nav.contact': 'Contact'
+  },
+  es: {
+    'brand.name': 'Villa Sunshine',
+    'common.loading': 'Cargando...',
+    'common.currentLanguage': 'Idioma actual',
+    'nav.home': 'Inicio',
+    'nav.about': 'Acerca',
+    'nav.contact': 'Contacto'
+  },
+  de: {
+    'brand.name': 'Villa Sunshine',
+    'common.loading': 'Laden...',
+    'common.currentLanguage': 'Aktuelle Sprache',
+    'nav.home': 'Startseite',
+    'nav.about': 'Über',
+    'nav.contact': 'Kontakt'
+  }
+};
+
+interface ContextType {
   locale: Locale;
   t: (key: string) => string;
   switchLanguage: (locale: Locale) => void;
   isLoading: boolean;
-  translations: any;
 }
 
-const TranslationContext = createContext<TranslationContextType | undefined>(undefined);
+const TranslationContext = createContext<ContextType>({
+  locale: 'pt',
+  t: (key: string) => key,
+  switchLanguage: () => {},
+  isLoading: false
+});
 
-// Cache global para traduções
-const translationCache = new Map<Locale, any>();
-
-// Função para carregar traduções
-async function loadTranslations(locale: Locale): Promise<any> {
-  if (translationCache.has(locale)) {
-    return translationCache.get(locale);
-  }
-
-  try {
-    let translationModule;
-    
-    switch (locale) {
-      case 'en':
-        translationModule = await import('../locales/en/common.json');
-        break;
-      case 'es':
-        translationModule = await import('../locales/es/common.json');
-        break;
-      case 'de':
-        translationModule = await import('../locales/de/common.json');
-        break;
-      default:
-        translationModule = await import('../locales/pt/common.json');
-    }
-    
-    const translations = translationModule.default;
-    translationCache.set(locale, translations);
-    return translations;
-  } catch (error) {
-    console.warn(`Failed to load translations for ${locale}, falling back to pt`);
-    
-    if (locale !== 'pt') {
-      return loadTranslations('pt');
-    }
-    
-    throw error;
-  }
-}
-
-// Função para obter valor aninhado
-function getNestedValue(obj: any, path: string): string {
-  return path.split('.').reduce((curr, key) => curr?.[key], obj) || path;
-}
-
-// Provider de contexto
-export function TranslationProvider(props: { children: ReactNode; initialLocale?: Locale }) {
-  const [locale, setLocale] = useState<Locale>(props.initialLocale || 'pt');
-  const [translations, setTranslations] = useState<any>({});
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const load = async () => {
-      try {
-        setIsLoading(true);
-        const data = await loadTranslations(locale);
-        
-        if (isMounted) {
-          setTranslations(data);
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error('Error loading translations:', error);
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    load();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [locale]);
+export function TranslationProvider({ children }: { children: ReactNode }) {
+  const [locale, setLocale] = useState<Locale>('pt');
 
   const t = (key: string): string => {
-    if (isLoading) return key;
-    return getNestedValue(translations, key);
+    return translations[locale]?.[key] || key;
   };
 
   const switchLanguage = (newLocale: Locale) => {
     setLocale(newLocale);
   };
 
-  const contextValue: TranslationContextType = {
-    locale: locale,
-    t: t,
-    switchLanguage: switchLanguage,
-    isLoading: isLoading,
-    translations: translations
+  const contextValue = {
+    locale,
+    t,
+    switchLanguage,
+    isLoading: false
   };
 
-  return TranslationContext.Provider({ value: contextValue, children: props.children });
+  return React.createElement(
+    TranslationContext.Provider,
+    { value: contextValue },
+    children
+  );
 }
 
-// Hook principal
 export function useTranslation() {
   const context = useContext(TranslationContext);
-  
-  if (!context) {
-    throw new Error('useTranslation must be used within a TranslationProvider');
-  }
-  
   return context;
-}
-
-// Utilitários
-export function clearTranslationCache() {
-  translationCache.clear();
 }

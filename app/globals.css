@@ -4,22 +4,71 @@
   padding: 0;
 }
 
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-family: system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   color: #333;
 }
 
-button {
-  cursor: pointer;
+/* Layout básico */
+.min-h-screen { min-height: 100vh; width: 100%; margin: 0; }
+.max-w-7xl { max-width: 1280px; margin: 0 auto; }
+.container { max-width: 1200px; margin: 0 auto; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* Padding responsivo */
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+
+/* Grid e Flex */
+.flex { display: flex; }
+.grid { display: grid; }
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.gap-8 { gap: 2rem; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.text-center { text-align: center; }
+
+/* Cores */
+.bg-white { background: white; }
+.bg-gray-50 { background: #f9fafb; }
+.bg-gray-900 { background: #111827; }
+.bg-blue-600 { background: #2563eb; }
+.text-blue-600 { color: #2563eb; }
+.text-white { color: white; }
+.text-gray-900 { color: #111827; }
+
+/* Typography */
+.text-2xl { font-size: 1.5rem; }
+.text-3xl { font-size: 1.875rem; }
+.text-5xl { font-size: 3rem; }
+.font-bold { font-weight: 700; }
+
+/* Effects */
+.rounded-lg { border-radius: 0.5rem; }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
+.border-b { border-bottom: 1px solid #e5e7eb; }
+
+/* Responsive */
+@media (min-width: 768px) {
+  .md\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .md\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .md\\:block { display: block; }
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@media (min-width: 1024px) {
+  .lg\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* Fix de alinhamento */
+body > div {
+  width: 100% !important;
+  margin: 0 !important;
 }

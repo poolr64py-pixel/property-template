@@ -3,7 +3,7 @@
 
 import { motion } from 'framer-motion';
 import { MapPin, Bed, Bath, Car, Maximize } from 'lucide-react';
-import { propertyConfig } from '@/config/property.config';
+import propertyConfig from '../../config/property.config';
 import OptimizedImage from './OptimizedImage';
 
 export default function Hero() {

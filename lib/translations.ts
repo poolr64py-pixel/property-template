@@ -1,40 +1,103 @@
-// Sistema de tradução definitivo - não precisará refazer
-const translations = {
-  pt: () => import('../locales/pt/common.json'),
-  es: () => import('../locales/es/common.json'), 
-  en: () => import('../locales/en/common.json'),
-  de: () => import('../locales/de/common.json')
+// lib/translations.ts
+export type Locale = 'pt' | 'en' | 'es' | 'de';
+
+// Traduções básicas embutidas no código - sem necessidade de arquivos JSON
+const translations: Record<Locale, Record<string, string>> = {
+  pt: {
+    'brand.name': 'Villa Sunshine',
+    'common.loading': 'Carregando...',
+    'common.currentLanguage': 'Idioma atual',
+    'nav.home': 'Início',
+    'nav.about': 'Sobre',
+    'nav.contact': 'Contato',
+    'hero.title': 'Villa Exclusiva para Aluguel',
+    'hero.subtitle': 'Experimente o luxo em Florianópolis',
+    'features.bedrooms': 'Quartos',
+    'features.bathrooms': 'Banheiros',
+    'features.guests': 'Hóspedes',
+    'features.area': 'Área',
+    'amenities.title': 'Comodidades',
+    'location.title': 'Localização',
+    'booking.title': 'Reserve Agora',
+    'booking.button': 'Fazer Reserva'
+  },
+  en: {
+    'brand.name': 'Villa Sunshine',
+    'common.loading': 'Loading...',
+    'common.currentLanguage': 'Current Language',
+    'nav.home': 'Home',
+    'nav.about': 'About',
+    'nav.contact': 'Contact',
+    'hero.title': 'Exclusive Villa for Rent',
+    'hero.subtitle': 'Experience luxury in Florianópolis',
+    'features.bedrooms': 'Bedrooms',
+    'features.bathrooms': 'Bathrooms', 
+    'features.guests': 'Guests',
+    'features.area': 'Area',
+    'amenities.title': 'Amenities',
+    'location.title': 'Location',
+    'booking.title': 'Book Now',
+    'booking.button': 'Make Reservation'
+  },
+  es: {
+    'brand.name': 'Villa Sunshine',
+    'common.loading': 'Cargando...',
+    'common.currentLanguage': 'Idioma actual',
+    'nav.home': 'Inicio',
+    'nav.about': 'Acerca',
+    'nav.contact': 'Contacto',
+    'hero.title': 'Villa Exclusiva en Alquiler',
+    'hero.subtitle': 'Experimenta el lujo en Florianópolis',
+    'features.bedrooms': 'Habitaciones',
+    'features.bathrooms': 'Baños',
+    'features.guests': 'Huéspedes',
+    'features.area': 'Área',
+    'amenities.title': 'Comodidades',
+    'location.title': 'Ubicación',
+    'booking.title': 'Reservar Ahora',
+    'booking.button': 'Hacer Reserva'
+  },
+  de: {
+    'brand.name': 'Villa Sunshine',
+    'common.loading': 'Laden...',
+    'common.currentLanguage': 'Aktuelle Sprache',
+    'nav.home': 'Startseite',
+    'nav.about': 'Über',
+    'nav.contact': 'Kontakt',
+    'hero.title': 'Exklusive Villa zur Miete',
+    'hero.subtitle': 'Erleben Sie Luxus in Florianópolis',
+    'features.bedrooms': 'Schlafzimmer',
+    'features.bathrooms': 'Badezimmer',
+    'features.guests': 'Gäste',
+    'features.area': 'Fläche',
+    'amenities.title': 'Ausstattung',
+    'location.title': 'Lage',
+    'booking.title': 'Jetzt Buchen',
+    'booking.button': 'Reservierung Machen'
+  }
 };
 
-export async function loadTranslations(locale: string = 'pt') {
-  try {
-    const translation = await translations[locale as keyof typeof translations]();
-    return translation.default;
-  } catch (error) {
-    console.warn(`Translation not found for ${locale}, falling back to pt`);
-    const fallback = await translations.pt();
-    return fallback.default;
-  }
-}
+export const getTranslations = (locale: Locale): Record<string, string> => {
+  return translations[locale] || translations.pt;
+};
 
-export function getNestedValue(obj: any, path: string): string {
-  return path.split('.').reduce((curr, key) => curr?.[key], obj) || path;
-}
+export const getTranslation = (locale: Locale, key: string): string => {
+  const localeTranslations = getTranslations(locale);
+  return localeTranslations[key] || key;
+};
 
-// Cache para evitar recarregamentos desnecessários
-const translationCache = new Map<string, any>();
+export const LOCALES: Locale[] = ['pt', 'en', 'es', 'de'];
 
-export async function getCachedTranslations(locale: string) {
-  if (translationCache.has(locale)) {
-    return translationCache.get(locale);
-  }
-  
-  const translations = await loadTranslations(locale);
-  translationCache.set(locale, translations);
-  return translations;
-}
+export const LOCALE_NAMES: Record<Locale, string> = {
+  pt: 'Português',
+  en: 'English',
+  es: 'Español', 
+  de: 'Deutsch'
+};
 
-// Utilitário para limpar cache (útil em desenvolvimento)
-export function clearTranslationCache() {
-  translationCache.clear();
-}
+export const LOCALE_FLAGS: Record<Locale, string> = {
+  pt: '🇧🇷',
+  en: '🇺🇸',
+  es: '🇪🇸',
+  de: '🇩🇪'
+};

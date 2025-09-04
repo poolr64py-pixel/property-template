@@ -1,6 +1,6 @@
 'use client';
 
-import { PropertyConfig } from '@/config/property.config';
+import type { PropertyConfig } from '../../lib/types/property';
 
 interface FeaturesProps {
   features: PropertyConfig['features'];

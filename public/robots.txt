@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://exemplo.com/sitemap.xml
+
+# Disallow optimization artifacts
+Disallow: /_next/
+Disallow: /api/
+Disallow: *.json
+
+# Allow images
+Allow: /images/
+Allow: /icons/
+Allow: /documents/

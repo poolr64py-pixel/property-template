@@ -1,422 +1,443 @@
 'use client';
+
 import { useState, useEffect } from 'react';
-import { Header } from '../components/layout/Header';
-import { Footer } from '../components/layout/Footer';
-import { Navigation, Breadcrumb, ContextMenu } from '../components/layout/Navigation';
+import { MapPin, Wifi, Car, Coffee, Waves, Users, Bed, Bath, Home, Phone, Mail } from 'lucide-react';
 
-// Tipos simples
-type Locale = 'pt' | 'en' | 'es' | 'de';
-
-const LOCALE_FLAGS = {
-  pt: '🇧🇷',
-  en: '🇺🇸',
-  es: '🇪🇸', 
-  de: '🇩🇪'
-};
-
-const LOCALE_NAMES = {
-  pt: 'Português',
-  en: 'English', 
-  es: 'Español',
-  de: 'Deutsch'
-};
-
-// Função para carregar traduções
-async function loadTranslations(locale: Locale) {
-  try {
-    let module;
-    switch (locale) {
-      case 'en':
-        module = await import('../locales/en/common.json');
-        break;
-      case 'es':
-        module = await import('../locales/es/common.json');
-        break;
-      case 'de':
-        module = await import('../locales/de/common.json');
-        break;
-      default:
-        module = await import('../locales/pt/common.json');
-    }
-    return module.default;
-  } catch (error) {
-    console.error('Error loading translations:', error);
-    return {};
-  }
-}
-
-function getNestedValue(obj: any, path: string): string {
-  return path.split('.').reduce((curr, key) => curr?.[key], obj) || path;
-}
-
-export default function HomePage() {
-  const [locale, setLocale] = useState<Locale>('pt');
-  const [translations, setTranslations] = useState<any>({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentSection, setCurrentSection] = useState('home');
-  const [contextMenu, setContextMenu] = useState<{
-    visible: boolean;
-    x: number;
-    y: number;
-  }>({ visible: false, x: 0, y: 0 });
+export default function VillaSunshine() {
+  const [currentLang, setCurrentLang] = useState('pt');
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const load = async () => {
-      setIsLoading(true);
-      const data = await loadTranslations(locale);
-      setTranslations(data);
-      setIsLoading(false);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
     };
-    load();
-  }, [locale]);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-  const t = (key: string): string => {
-    if (isLoading) return key;
-    return getNestedValue(translations, key);
-  };
-
-  const switchLanguage = (newLocale: Locale) => {
-    setLocale(newLocale);
-  };
-
-  // Dados para os componentes
-  const navigationItems = [
-    {
-      key: 'home',
-      label: t('nav.home'),
-      icon: '🏠',
-      isActive: currentSection === 'home',
-      onClick: () => setCurrentSection('home')
+  const translations = {
+    pt: {
+      brand: 'Villa Sunshine',
+      tagline: 'Sua villa dos sonhos em Florianópolis',
+      hero: 'Villa Exclusiva com Vista para o Mar',
+      heroDesc: 'Desfrute de momentos inesquecíveis em nossa luxuosa villa com vista panorâmica para o mar.',
+      bookNow: 'Reserve Agora',
+      fromPrice: 'A partir de R$ 350/noite',
+      amenities: 'Comodidades',
+      location: 'Localização Privilegiada',
+      locationDesc: 'Localizada na paradisíaca Florianópolis, nossa villa oferece fácil acesso às melhores praias.',
+      contact: 'Entre em Contato',
+      phone: 'Telefone',
+      email: 'E-mail',
+      wifi: 'Wi-Fi Gratuito',
+      parking: 'Estacionamento',
+      kitchen: 'Cozinha Completa',
+      pool: 'Piscina Privativa'
     },
-    {
-      key: 'about',
-      label: t('nav.about'),
-      icon: '📋',
-      isActive: currentSection === 'about',
-      onClick: () => setCurrentSection('about')
+    en: {
+      brand: 'Villa Sunshine',
+      tagline: 'Your dream villa in Florianópolis',
+      hero: 'Exclusive Villa with Ocean View',
+      heroDesc: 'Enjoy unforgettable moments in our luxurious villa with panoramic ocean views.',
+      bookNow: 'Book Now',
+      fromPrice: 'Starting from $70/night',
+      amenities: 'Amenities',
+      location: 'Prime Location',
+      locationDesc: 'Located in paradisiacal Florianópolis, our villa offers easy access to the best beaches.',
+      contact: 'Get in Touch',
+      phone: 'Phone',
+      email: 'E-mail',
+      wifi: 'Free Wi-Fi',
+      parking: 'Parking',
+      kitchen: 'Full Kitchen',
+      pool: 'Private Pool'
     },
-    {
-      key: 'services',
-      label: t('nav.services'),
-      icon: '⚙️',
-      isActive: currentSection === 'services',
-      onClick: () => setCurrentSection('services'),
-      children: [
-        {
-          key: 'web-dev',
-          label: 'Desenvolvimento Web',
-          onClick: () => setCurrentSection('web-dev')
-        },
-        {
-          key: 'mobile-dev',
-          label: 'Desenvolvimento Mobile',
-          onClick: () => setCurrentSection('mobile-dev')
-        }
-      ]
+    es: {
+      brand: 'Villa Sunshine',
+      tagline: 'Tu villa soñada en Florianópolis',
+      hero: 'Villa Exclusiva con Vista al Mar',
+      heroDesc: 'Disfruta de momentos inolvidables en nuestra lujosa villa con vista panorámica.',
+      bookNow: 'Reservar Ahora',
+      fromPrice: 'Desde $70/noche',
+      amenities: 'Comodidades',
+      location: 'Ubicación Privilegiada',
+      locationDesc: 'Ubicada en la paradisíaca Florianópolis, nuestra villa ofrece fácil acceso.',
+      contact: 'Contactar',
+      phone: 'Teléfono',
+      email: 'E-mail',
+      wifi: 'Wi-Fi Gratuito',
+      parking: 'Estacionamiento',
+      kitchen: 'Cocina Completa',
+      pool: 'Piscina Privada'
     },
-    {
-      key: 'contact',
-      label: t('nav.contact'),
-      icon: '📞',
-      isActive: currentSection === 'contact',
-      onClick: () => setCurrentSection('contact')
+    de: {
+      brand: 'Villa Sunshine',
+      tagline: 'Ihre Traumvilla in Florianópolis',
+      hero: 'Exklusive Villa mit Meerblick',
+      heroDesc: 'Genießen Sie unvergessliche Momente in unserer luxuriösen Villa mit Panoramablick.',
+      bookNow: 'Jetzt Buchen',
+      fromPrice: 'Ab $70/Nacht',
+      amenities: 'Ausstattung',
+      location: 'Privilegierte Lage',
+      locationDesc: 'In dem paradiesischen Florianópolis gelegen, bietet unsere Villa einfachen Zugang.',
+      contact: 'Kontakt',
+      phone: 'Telefon',
+      email: 'E-Mail',
+      wifi: 'Kostenloses Wi-Fi',
+      parking: 'Parkplatz',
+      kitchen: 'Vollküche',
+      pool: 'Privater Pool'
     }
-  ];
-
-  const breadcrumbItems = [
-    { label: t('nav.home'), onClick: () => setCurrentSection('home') },
-    { label: t('demo.title'), isActive: true }
-  ];
-
-  const footerSections = [
-    {
-      title: t('footer.sections.company.title'),
-      links: [
-        { key: 'about', label: t('footer.sections.company.about'), onClick: () => setCurrentSection('about') },
-        { key: 'team', label: t('footer.sections.company.team'), onClick: () => alert('Em desenvolvimento') },
-        { key: 'careers', label: t('footer.sections.company.careers'), onClick: () => alert('Em desenvolvimento') }
-      ]
-    },
-    {
-      title: t('footer.sections.resources.title'),
-      links: [
-        { key: 'docs', label: t('footer.sections.resources.documentation'), onClick: () => alert('Documentação') },
-        { key: 'tutorials', label: t('footer.sections.resources.tutorials'), onClick: () => alert('Tutoriais') },
-        { key: 'examples', label: t('footer.sections.resources.examples'), onClick: () => alert('Exemplos') }
-      ]
-    },
-    {
-      title: t('footer.sections.support.title'),
-      links: [
-        { key: 'help', label: t('footer.sections.support.help'), onClick: () => alert('Central de Ajuda') },
-        { key: 'contact', label: t('footer.sections.support.contact'), onClick: () => setCurrentSection('contact') },
-        { key: 'feedback', label: t('footer.sections.support.feedback'), onClick: () => alert('Feedback') }
-      ]
-    }
-  ];
-
-  const socialLinks = [
-    { name: 'GitHub', icon: '🐱', url: 'https://github.com' },
-    { name: 'LinkedIn', icon: '💼', url: 'https://linkedin.com' },
-    { name: 'Twitter', icon: '🐦', url: 'https://twitter.com' }
-  ];
-
-  const contextMenuItems = [
-    { key: 'copy', label: 'Copiar', icon: '📋', onClick: () => alert('Copiado!') },
-    { key: 'share', label: 'Compartilhar', icon: '🔗', onClick: () => alert('Compartilhado!') },
-    { key: 'print', label: 'Imprimir', icon: '🖨️', onClick: () => window.print() }
-  ];
-
-  const handleContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setContextMenu({
-      visible: true,
-      x: e.clientX,
-      y: e.clientY
-    });
   };
 
-  if (isLoading) {
-    return (
-      <div style={{ 
-        minHeight: '100vh', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center' 
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ 
-            width: '48px', 
-            height: '48px', 
-            border: '3px solid #f3f4f6',
-            borderTop: '3px solid #2563eb',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 16px'
-          }}></div>
-          <p>{t('common.loading')}</p>
-        </div>
-      </div>
-    );
-  }
+  const t = (key) => translations[currentLang]?.[key] || key;
+
+  const styles = {
+    container: {
+      fontFamily: 'system-ui, sans-serif',
+      margin: 0,
+      padding: 0,
+      width: '100%',
+      overflowX: 'hidden',
+      backgroundColor: 'white'
+    },
+    header: {
+      backgroundColor: 'white',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+      borderBottom: '1px solid #e5e7eb',
+      position: 'sticky',
+      top: 0,
+      zIndex: 50,
+      width: '100%'
+    },
+    headerContent: {
+      maxWidth: '1280px',
+      margin: '0 auto',
+      padding: isMobile ? '0 1rem' : '0 2rem',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      height: '64px',
+      flexWrap: 'wrap'
+    },
+    logo: {
+      fontSize: isMobile ? '1.25rem' : '1.5rem',
+      fontWeight: 'bold',
+      color: '#2563eb'
+    },
+    nav: {
+      display: isMobile ? 'none' : 'flex',
+      gap: '2rem'
+    },
+    langButtons: {
+      display: 'flex',
+      gap: '0.25rem',
+      flexWrap: 'wrap'
+    },
+    langButton: {
+      padding: '0.5rem',
+      border: 'none',
+      borderRadius: '0.25rem',
+      cursor: 'pointer',
+      fontSize: '0.75rem',
+      transition: 'all 0.2s',
+      minWidth: '40px'
+    },
+    hero: {
+      background: 'linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%)',
+      padding: isMobile ? '3rem 1rem' : '5rem 2rem',
+      width: '100%',
+      boxSizing: 'border-box'
+    },
+    heroContent: {
+      maxWidth: '1280px',
+      margin: '0 auto',
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      gap: isMobile ? '2rem' : '3rem',
+      alignItems: 'center'
+    },
+    heroText: {
+      flex: 1,
+      color: '#111827'
+    },
+    heroTitle: {
+      fontSize: isMobile ? '2rem' : '3rem',
+      fontWeight: 'bold',
+      marginBottom: '1.5rem',
+      lineHeight: '1.2'
+    },
+    heroDesc: {
+      fontSize: isMobile ? '1rem' : '1.25rem',
+      color: '#4b5563',
+      marginBottom: '1.5rem',
+      lineHeight: '1.6'
+    },
+    price: {
+      fontSize: isMobile ? '1.25rem' : '1.5rem',
+      fontWeight: '600',
+      color: '#2563eb',
+      marginBottom: '2rem'
+    },
+    button: {
+      backgroundColor: '#2563eb',
+      color: 'white',
+      padding: isMobile ? '0.75rem 1.5rem' : '1rem 2rem',
+      border: 'none',
+      borderRadius: '0.5rem',
+      fontSize: '1rem',
+      fontWeight: '600',
+      cursor: 'pointer',
+      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+      transition: 'all 0.2s',
+      width: isMobile ? '100%' : 'auto'
+    },
+    card: {
+      flex: isMobile ? 'none' : '0 0 400px',
+      width: isMobile ? '100%' : '400px',
+      background: 'linear-gradient(135deg, #60a5fa 0%, #2563eb 100%)',
+      borderRadius: '1rem',
+      padding: '2rem',
+      color: 'white',
+      boxShadow: '0 20px 25px rgba(0,0,0,0.15)'
+    },
+    cardTitle: {
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+      marginBottom: '1rem'
+    },
+    cardSubtitle: {
+      color: '#dbeafe',
+      marginBottom: '1.5rem',
+      fontSize: '0.9rem'
+    },
+    features: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '1rem'
+    },
+    feature: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem',
+      fontSize: '0.9rem'
+    },
+    section: {
+      padding: isMobile ? '3rem 1rem' : '5rem 2rem',
+      width: '100%',
+      boxSizing: 'border-box'
+    },
+    sectionContent: {
+      maxWidth: '1280px',
+      margin: '0 auto'
+    },
+    sectionTitle: {
+      fontSize: isMobile ? '1.5rem' : '2rem',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: '3rem',
+      color: '#111827'
+    },
+    amenitiesGrid: {
+      display: 'grid',
+      gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
+      gap: '1rem'
+    },
+    amenityCard: {
+      display: 'flex',
+      alignItems: 'center',
+      padding: '1rem',
+      backgroundColor: 'white',
+      borderRadius: '0.5rem',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+      border: '1px solid #e5e7eb'
+    },
+    amenityIcon: {
+      width: '40px',
+      height: '40px',
+      backgroundColor: '#eff6ff',
+      borderRadius: '0.5rem',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: '1rem',
+      flexShrink: 0
+    },
+    contactSection: {
+      backgroundColor: '#111827',
+      color: 'white'
+    },
+    contactGrid: {
+      display: 'grid',
+      gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
+      gap: '1rem',
+      marginBottom: '2rem'
+    },
+    contactCard: {
+      textAlign: 'center',
+      padding: '1.5rem',
+      backgroundColor: '#1f2937',
+      borderRadius: '0.5rem'
+    },
+    footer: {
+      backgroundColor: '#111827',
+      borderTop: '1px solid #374151',
+      padding: '2rem 1rem',
+      textAlign: 'center',
+      color: '#9ca3af'
+    }
+  };
+
+  const amenitiesList = [
+    { icon: Wifi, label: t('wifi') },
+    { icon: Car, label: t('parking') },
+    { icon: Coffee, label: t('kitchen') },
+    { icon: Waves, label: t('pool') }
+  ];
+
+  const languages = [
+    { code: 'pt', flag: '🇧🇷', name: 'PT' },
+    { code: 'en', flag: '🇺🇸', name: 'EN' },
+    { code: 'es', flag: '🇪🇸', name: 'ES' },
+    { code: 'de', flag: '🇩🇪', name: 'DE' }
+  ];
 
   return (
-    <div style={{ 
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #e0e7ff 100%)',
-      display: 'flex',
-      flexDirection: 'column'
-    }}>
-      {/* Header Reutilizável */}
-      <Header
-        brandName={t('brand.name')}
-        currentLocale={locale}
-        onLanguageChange={switchLanguage}
-        navigationItems={navigationItems}
-        showLanguageSelector={true}
-      />
-
-      {/* Breadcrumb */}
-      <div style={{ 
-        maxWidth: '1200px', 
-        margin: '0 auto', 
-        padding: '20px',
-        width: '100%'
-      }}>
-        <Breadcrumb items={breadcrumbItems} />
-      </div>
-
-      {/* Conteúdo Principal */}
-      <main 
-        style={{ 
-          maxWidth: '1200px', 
-          margin: '0 auto', 
-          padding: '0 20px 40px',
-          flex: 1,
-          width: '100%'
-        }}
-        onContextMenu={handleContextMenu}
-      >
-        {/* Hero Section */}
-        <div style={{ 
-          textAlign: 'center',
-          background: 'white',
-          padding: '60px 40px',
-          borderRadius: '15px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-          marginBottom: '40px'
-        }}>
-          <h1 style={{ 
-            fontSize: '48px', 
-            fontWeight: 'bold', 
-            color: '#111827',
-            marginBottom: '20px'
-          }}>
-            {t('demo.title')}
-          </h1>
+    <div style={styles.container}>
+      {/* Header */}
+      <header style={styles.header}>
+        <div style={styles.headerContent}>
+          <h1 style={styles.logo}>{t('brand')}</h1>
           
-          <p style={{ 
-            fontSize: '18px', 
-            color: '#6b7280',
-            marginBottom: '30px',
-            maxWidth: '600px',
-            margin: '0 auto 30px'
-          }}>
-            {t('demo.subtitle')}
-          </p>
-        </div>
+          {!isMobile && (
+            <nav style={styles.nav}>
+              <a href="#inicio" style={{color: '#374151', textDecoration: 'none'}}>Início</a>
+              <a href="#sobre" style={{color: '#374151', textDecoration: 'none'}}>Sobre</a>
+              <a href="#contato" style={{color: '#374151', textDecoration: 'none'}}>Contato</a>
+            </nav>
+          )}
 
-        {/* Demonstração de Navegações */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '30px',
-          marginBottom: '40px'
-        }}>
-          {/* Navegação Horizontal */}
-          <div style={{
-            background: 'white',
-            padding: '30px',
-            borderRadius: '15px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-          }}>
-            <h3 style={{ marginBottom: '20px', color: '#111827' }}>
-              Navegação Horizontal
-            </h3>
-            <Navigation
-              items={navigationItems}
-              variant="horizontal"
-            />
-          </div>
-
-          {/* Navegação Vertical */}
-          <div style={{
-            background: 'white',
-            padding: '30px',
-            borderRadius: '15px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-          }}>
-            <h3 style={{ marginBottom: '20px', color: '#111827' }}>
-              Navegação Vertical
-            </h3>
-            <Navigation
-              items={navigationItems}
-              variant="vertical"
-            />
-          </div>
-
-          {/* Sidebar */}
-          <div style={{
-            background: 'white',
-            padding: '30px',
-            borderRadius: '15px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-          }}>
-            <h3 style={{ marginBottom: '20px', color: '#111827' }}>
-              Sidebar
-            </h3>
-            <Navigation
-              items={navigationItems}
-              variant="sidebar"
-            />
+          <div style={styles.langButtons}>
+            {languages.map(lang => (
+              <button
+                key={lang.code}
+                onClick={() => setCurrentLang(lang.code)}
+                style={{
+                  ...styles.langButton,
+                  backgroundColor: currentLang === lang.code ? '#eff6ff' : 'transparent',
+                  color: currentLang === lang.code ? '#2563eb' : '#6b7280'
+                }}
+              >
+                {lang.flag}
+              </button>
+            ))}
           </div>
         </div>
+      </header>
 
-        {/* Recursos */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '30px',
-          marginBottom: '40px'
-        }}>
-          {[1, 2, 3].map((i) => (
-            <div key={i} style={{ 
-              background: 'white', 
-              padding: '30px',
-              borderRadius: '15px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-              transition: 'transform 0.2s'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-5px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
+      {/* Hero Section */}
+      <section style={styles.hero}>
+        <div style={styles.heroContent}>
+          <div style={styles.heroText}>
+            <h2 style={styles.heroTitle}>{t('hero')}</h2>
+            <p style={styles.heroDesc}>{t('heroDesc')}</p>
+            <p style={styles.price}>{t('fromPrice')}</p>
+            <button 
+              style={styles.button}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#1d4ed8'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#2563eb'}
             >
-              <div style={{ 
-                fontSize: '48px',
-                marginBottom: '20px',
-                textAlign: 'center'
-              }}>
-                {t(`features.items.${i}.icon`)}
+              {t('bookNow')}
+            </button>
+          </div>
+          
+          <div style={styles.card}>
+            <h3 style={styles.cardTitle}>{t('brand')}</h3>
+            <p style={styles.cardSubtitle}>{t('tagline')}</p>
+            
+            <div style={styles.features}>
+              <div style={styles.feature}>
+                <Bed size={16} />
+                <span>4 Quartos</span>
               </div>
-              <h3 style={{ 
-                fontSize: '24px',
-                fontWeight: '600',
-                color: '#111827',
-                marginBottom: '15px',
-                textAlign: 'center'
-              }}>
-                {t(`features.items.${i}.title`)}
-              </h3>
-              <p style={{ 
-                color: '#6b7280',
-                lineHeight: '1.6',
-                textAlign: 'center'
-              }}>
-                {t(`features.items.${i}.description`)}
-              </p>
+              <div style={styles.feature}>
+                <Bath size={16} />
+                <span>3 Banheiros</span>
+              </div>
+              <div style={styles.feature}>
+                <Users size={16} />
+                <span>8 Pessoas</span>
+              </div>
+              <div style={styles.feature}>
+                <Home size={16} />
+                <span>250m²</span>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
+      </section>
 
-        {/* Status do Sistema */}
-        <div style={{ 
-          background: 'white', 
-          padding: '30px', 
-          borderRadius: '15px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-          textAlign: 'center'
-        }}>
-          <h3 style={{ color: '#16a34a', marginBottom: '15px', fontSize: '24px' }}>
-            ✅ Todos os Componentes Funcionando!
-          </h3>
-          <p style={{ fontSize: '18px', marginBottom: '10px' }}>
-            <strong>Idioma atual:</strong> {LOCALE_FLAGS[locale]} {LOCALE_NAMES[locale]}
-          </p>
-          <p style={{ color: '#6b7280' }}>
-            Clique com o botão direito em qualquer lugar para ver o menu de contexto
-          </p>
+      {/* Amenities */}
+      <section style={{...styles.section, backgroundColor: '#f9fafb'}}>
+        <div style={styles.sectionContent}>
+          <h3 style={styles.sectionTitle}>{t('amenities')}</h3>
+          
+          <div style={styles.amenitiesGrid}>
+            {amenitiesList.map((amenity, index) => (
+              <div key={index} style={styles.amenityCard}>
+                <div style={styles.amenityIcon}>
+                  <amenity.icon size={20} color="#2563eb" />
+                </div>
+                <h4 style={{margin: 0, color: '#111827', fontWeight: '600'}}>{amenity.label}</h4>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
+      </section>
 
-      {/* Footer Reutilizável */}
-      <Footer
-        brandName={t('brand.name')}
-        description={t('brand.description')}
-        copyrightText={t('footer.copyright')}
-        poweredByText={t('footer.poweredBy')}
-        sections={footerSections}
-        socialLinks={socialLinks}
-        showBackToTop={true}
-      />
+      {/* Contact */}
+      <section style={{...styles.section, ...styles.contactSection}}>
+        <div style={styles.sectionContent}>
+          <h3 style={{...styles.sectionTitle, color: 'white'}}>{t('contact')}</h3>
+          
+          <div style={styles.contactGrid}>
+            <div style={styles.contactCard}>
+              <Phone size={24} color="#60a5fa" style={{marginBottom: '1rem'}} />
+              <h4 style={{marginBottom: '0.5rem', fontSize: '1rem'}}>{t('phone')}</h4>
+              <p style={{color: '#60a5fa', margin: 0, fontSize: '0.9rem'}}>+55 48 9999-9999</p>
+            </div>
+            
+            <div style={styles.contactCard}>
+              <Mail size={24} color="#60a5fa" style={{marginBottom: '1rem'}} />
+              <h4 style={{marginBottom: '0.5rem', fontSize: '1rem'}}>{t('email')}</h4>
+              <p style={{color: '#60a5fa', margin: 0, fontSize: '0.9rem'}}>contato@villasunshine.com</p>
+            </div>
+            
+            <div style={styles.contactCard}>
+              <MapPin size={24} color="#60a5fa" style={{marginBottom: '1rem'}} />
+              <h4 style={{marginBottom: '0.5rem', fontSize: '1rem'}}>Endereço</h4>
+              <p style={{color: '#60a5fa', margin: 0, fontSize: '0.9rem'}}>Florianópolis, SC</p>
+            </div>
+          </div>
 
-      {/* Menu de Contexto */}
-      <ContextMenu
-        items={contextMenuItems}
-        isVisible={contextMenu.visible}
-        position={{ x: contextMenu.x, y: contextMenu.y }}
-        onClose={() => setContextMenu({ ...contextMenu, visible: false })}
-      />
+          <div style={{textAlign: 'center'}}>
+            <button 
+              style={styles.button}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#1d4ed8'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#2563eb'}
+            >
+              {t('bookNow')}
+            </button>
+          </div>
+        </div>
+      </section>
 
-      {/* CSS para animações */}
-      <style jsx>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+      {/* Footer */}
+      <footer style={styles.footer}>
+        <h4 style={{fontSize: '1.25rem', fontWeight: 'bold', color: '#60a5fa', marginBottom: '1rem'}}>{t('brand')}</h4>
+        <p style={{fontSize: '0.875rem'}}>© 2024 Villa Sunshine. Todos os direitos reservados.</p>
+      </footer>
     </div>
   );
 }

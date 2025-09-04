@@ -1,0 +1,43 @@
+'use client';
+
+export default function Contact() {
+  return (
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Entre em Contato
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-4">Agente</h3>
+              <p className="mb-2">Ana Silva</p>
+              <p className="mb-2">
+                <a href="tel:+351282123456" className="text-blue-600 hover:underline">
+                  +351 282 123 456
+                </a>
+              </p>
+              <p>
+                <a href="mailto:ana@luxuryrealestate.pt" className="text-blue-600 hover:underline">
+                  ana@luxuryrealestate.pt
+                </a>
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-4">Escritório</h3>
+              <p className="mb-2">Luxury Real Estate Algarve</p>
+              <p className="mb-2">Rua Central, 45, Lagos</p>
+              <p>
+                <a href="tel:+351282987654" className="text-blue-600 hover:underline">
+                  +351 282 987 654
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

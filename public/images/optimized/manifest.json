@@ -1,0 +1,50 @@
+{
+  "generated": "2025-09-03T21:46:00.434Z",
+  "config": {
+    "formats": [
+      "webp",
+      "jpg"
+    ],
+    "qualities": [
+      85,
+      75
+    ],
+    "sizes": {
+      "thumbnail": 150,
+      "small": 400,
+      "medium": 800,
+      "large": 1200,
+      "xl": 1920
+    },
+    "hero": {
+      "desktop": {
+        "width": 1920,
+        "height": 1080
+      },
+      "mobile": {
+        "width": 768,
+        "height": 432
+      }
+    }
+  },
+  "images": {
+    "gallery": [],
+    "hero": [
+      {
+        "filename": "hero-desktop.webp",
+        "path": "/images/optimized/hero/hero-desktop.webp",
+        "baseName": "hero",
+        "size": "desktop",
+        "format": "webp"
+      },
+      {
+        "filename": "hero-mobile.webp",
+        "path": "/images/optimized/hero/hero-mobile.webp",
+        "baseName": "hero",
+        "size": "mobile",
+        "format": "webp"
+      }
+    ],
+    "thumbnails": []
+  }
+}

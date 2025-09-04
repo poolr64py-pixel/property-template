@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslation, LOCALES, LOCALE_NAMES, LOCALE_FLAGS, Locale } from '../lib/useTranslation';
+import type { Locale } from '../../lib/types/property';
+import { useTranslation, LOCALES, LOCALE_NAMES, LOCALE_FLAGS } from '../../lib/hooks/useTranslation';
 
 interface LanguageSelectorProps {
   variant?: 'dropdown' | 'buttons' | 'compact';
