@@ -96,25 +96,27 @@ const propertyData = {
   featured: true,
   dateAdded: new Date('2024-01-01').toISOString(),
   location: {
-    address: 'Rua das Flores, 123',
-    city: 'Florianópolis',
-    region: 'Santa Catarina',
     country: 'Brasil',
-    zipCode: '88000-000',
-    coordinates: { lat: -27.5954, lng: -48.5480 }
+    region: 'Santa Catarina',
+    city: 'Florianópolis',
+    address: 'Rua das Flores, 123',
+    coordinates: { lat: -27.5954, lng: -48.5480 },
+    zipCode: '88000-000'
   },
   specs: {
     bedrooms: 4,
     bathrooms: 3,
     area: 250,
     buildYear: 2020,
+    parking: 2,
     pool: true,
     garden: true,
-    parking: true
+    balcony: true,
+    terrace: true
   },
   pricing: {
     rentPrice: 350,
-    currency: 'BRL' as const
+    currency: 'BRL'
   }
 };
 
