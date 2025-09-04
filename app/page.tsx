@@ -91,7 +91,7 @@ export default function VillaSunshine() {
     }
   };
 
-  const t = (key) => translations[currentLang]?.[key] || key;
+  const t = (key: string): string => translations[currentLang]?.[key] || key;
 
   const styles = {
     container: {
