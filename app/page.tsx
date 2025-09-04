@@ -5,11 +5,11 @@ import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 import { PropertyCard } from '../components/property/PropertyCard';
 import { OptimizedImage } from '../components/ui/OptimizedImage';
-import { MapPin, Wifi, Car, Coffee, Waves, Users, Bed, Bath, Home, Phone, Mail } from 'lucide-react';
+import { MapPin, Wifi, Car, Coffee, Waves, Phone, Mail } from 'lucide-react';
 
 type Locale = 'pt' | 'en' | 'es' | 'de';
 
-// Traduções usando a mesma estrutura dos componentes existentes
+// Traduções
 const translations = {
   pt: {
     brand: 'Villa Sunshine',
@@ -20,6 +20,10 @@ const translations = {
     fromPrice: 'A partir de R$ 350/noite',
     amenities: 'Comodidades',
     contact: 'Entre em Contato',
+    wifi: 'Wi-Fi Gratuito',
+    parking: 'Estacionamento',
+    kitchen: 'Cozinha Completa',
+    pool: 'Piscina Privativa',
     nav: {
       home: 'Início',
       about: 'Sobre',
@@ -35,6 +39,10 @@ const translations = {
     fromPrice: 'Starting from $70/night',
     amenities: 'Amenities',
     contact: 'Get in Touch',
+    wifi: 'Free Wi-Fi',
+    parking: 'Parking',
+    kitchen: 'Full Kitchen',
+    pool: 'Private Pool',
     nav: {
       home: 'Home',
       about: 'About',
@@ -50,6 +58,10 @@ const translations = {
     fromPrice: 'Desde $70/noche',
     amenities: 'Comodidades',
     contact: 'Contactar',
+    wifi: 'Wi-Fi Gratuito',
+    parking: 'Estacionamiento',
+    kitchen: 'Cocina Completa',
+    pool: 'Piscina Privada',
     nav: {
       home: 'Inicio',
       about: 'Acerca',
@@ -65,6 +77,10 @@ const translations = {
     fromPrice: 'Ab $70/Nacht',
     amenities: 'Ausstattung',
     contact: 'Kontakt',
+    wifi: 'Kostenloses Wi-Fi',
+    parking: 'Parkplatz',
+    kitchen: 'Vollküche',
+    pool: 'Privater Pool',
     nav: {
       home: 'Start',
       about: 'Über uns',
@@ -73,14 +89,16 @@ const translations = {
   }
 };
 
-// Dados mock da propriedade usando os tipos existentes
+// Dados da propriedade com todas as propriedades obrigatórias
 const propertyData = {
   id: 'villa-sunshine-1',
+  name: 'Villa Sunshine',
   type: 'villa' as const,
   status: 'for-rent' as const,
   featured: true,
+  dateAdded: new Date('2024-01-01').toISOString(),
   location: {
-    address: 'Florianópolis, SC',
+    address: 'Rua das Flores, 123',
     city: 'Florianópolis',
     region: 'Santa Catarina',
     country: 'Brasil',
@@ -97,30 +115,31 @@ const propertyData = {
   },
   pricing: {
     rentPrice: 350,
-    currency: 'BRL'
+    currency: 'BRL' as const
   }
 };
 
+// Conteúdo da propriedade para cada idioma
 const propertyContent = {
   pt: {
     title: 'Villa Sunshine - Vista para o Mar',
-    description: 'Villa luxuosa com vista panorâmica',
-    shortDescription: 'Villa exclusiva em Florianópolis'
+    description: 'Villa luxuosa com vista panorâmica para o mar, piscina privativa e todas as comodidades para uma estadia perfeita.',
+    shortDescription: 'Villa exclusiva em Florianópolis com vista para o mar'
   },
   en: {
     title: 'Villa Sunshine - Ocean View',
-    description: 'Luxury villa with panoramic view',
-    shortDescription: 'Exclusive villa in Florianópolis'
+    description: 'Luxury villa with panoramic ocean view, private pool and all amenities for a perfect stay.',
+    shortDescription: 'Exclusive villa in Florianópolis with ocean view'
   },
   es: {
     title: 'Villa Sunshine - Vista al Mar',
-    description: 'Villa de lujo con vista panorámica',
-    shortDescription: 'Villa exclusiva en Florianópolis'
+    description: 'Villa de lujo con vista panorámica al mar, piscina privada y todas las comodidades para una estancia perfecta.',
+    shortDescription: 'Villa exclusiva en Florianópolis con vista al mar'
   },
   de: {
     title: 'Villa Sunshine - Meerblick',
-    description: 'Luxusvilla mit Panoramablick',
-    shortDescription: 'Exklusive Villa in Florianópolis'
+    description: 'Luxusvilla mit Panoramablick auf das Meer, privatem Pool und allen Annehmlichkeiten für einen perfekten Aufenthalt.',
+    shortDescription: 'Exklusive Villa in Florianópolis mit Meerblick'
   }
 };
 
@@ -140,132 +159,170 @@ export default function HomePage() {
   };
 
   const navigationItems = [
-    { key: 'home', label: t('nav.home'), onClick: () => console.log('Home') },
-    { key: 'about', label: t('nav.about'), onClick: () => console.log('About') },
-    { key: 'contact', label: t('nav.contact'), onClick: () => console.log('Contact') }
+    { 
+      key: 'home', 
+      label: t('nav.home'), 
+      onClick: () => {
+        document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    { 
+      key: 'amenities', 
+      label: t('amenities'), 
+      onClick: () => {
+        document.getElementById('amenities')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    { 
+      key: 'contact', 
+      label: t('nav.contact'), 
+      onClick: () => {
+        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  ];
+
+  const amenitiesData = [
+    { icon: Wifi, key: 'wifi' },
+    { icon: Car, key: 'parking' },
+    { icon: Coffee, key: 'kitchen' },
+    { icon: Waves, key: 'pool' }
   ];
 
   return (
-    <div className="villa-homepage">
-      {/* Header usando o componente existente */}
-      <Header
-        brandName={t('brand')}
-        currentLocale={currentLocale}
-        onLanguageChange={setCurrentLocale}
-        navigationItems={navigationItems}
-        showLanguageSelector={true}
-      />
+    <>
+      <div className="villa-homepage">
+        {/* Header */}
+        <Header
+          brandName={t('brand')}
+          currentLocale={currentLocale}
+          onLanguageChange={setCurrentLocale}
+          navigationItems={navigationItems}
+          showLanguageSelector={true}
+        />
 
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-container">
-          <div className="hero-content">
-            <div className="hero-text">
-              <h1 className="hero-title">{t('hero')}</h1>
-              <p className="hero-description">{t('heroDesc')}</p>
-              <p className="hero-price">{t('fromPrice')}</p>
-              <button className="cta-button">{t('bookNow')}</button>
+        {/* Hero Section */}
+        <section id="hero" className="hero-section">
+          <div className="hero-container">
+            <div className="hero-content">
+              <div className="hero-text">
+                <h1 className="hero-title">{t('hero')}</h1>
+                <p className="hero-description">{t('heroDesc')}</p>
+                <p className="hero-price">{t('fromPrice')}</p>
+                <button 
+                  className="cta-button"
+                  onClick={() => {
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  {t('bookNow')}
+                </button>
+              </div>
+              
+              <div className="hero-image">
+                <div className="image-placeholder">
+                  <div className="image-content">
+                    <h3>{t('brand')}</h3>
+                    <p>{t('tagline')}</p>
+                    <div className="features-mini">
+                      <span>🏠 4 Quartos</span>
+                      <span>🚿 3 Banheiros</span>
+                      <span>👥 8 Pessoas</span>
+                      <span>📐 250m²</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+        </section>
+
+        {/* Property Card Section */}
+        <section className="property-showcase">
+          <div className="section-container">
+            <h2 className="section-title">Nossa Villa</h2>
             
-            <div className="hero-image">
-              <OptimizedImage
-                src="/images/villa-hero.jpg"
-                alt={t('hero')}
-                width={600}
-                height={400}
-                className="rounded-lg shadow-2xl"
-                style={{ objectFit: 'cover' }}
+            <div className="property-card-container">
+              <PropertyCard
+                property={propertyData}
+                content={propertyContent[currentLocale]}
+                locale={currentLocale}
+                heroImage="/images/villa-main.jpg"
+                variant="featured"
+                className="featured-property"
+                onClick={() => {
+                  console.log('Property clicked');
+                }}
               />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Property Card Section */}
-      <section className="property-showcase">
-        <div className="section-container">
-          <h2 className="section-title">Nossa Villa</h2>
-          
-          <div className="property-card-container">
-            <PropertyCard
-              property={propertyData}
-              content={propertyContent[currentLocale]}
-              locale={currentLocale}
-              heroImage="/images/villa-main.jpg"
-              variant="featured"
-              onClick={() => console.log('Property clicked')}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Amenities Section */}
-      <section className="amenities-section">
-        <div className="section-container">
-          <h2 className="section-title">{t('amenities')}</h2>
-          
-          <div className="amenities-grid">
-            <div className="amenity-card">
-              <Wifi className="amenity-icon" />
-              <h3>Wi-Fi Gratuito</h3>
-            </div>
-            <div className="amenity-card">
-              <Car className="amenity-icon" />
-              <h3>Estacionamento</h3>
-            </div>
-            <div className="amenity-card">
-              <Coffee className="amenity-icon" />
-              <h3>Cozinha Completa</h3>
-            </div>
-            <div className="amenity-card">
-              <Waves className="amenity-icon" />
-              <h3>Piscina Privativa</h3>
+        {/* Amenities Section */}
+        <section id="amenities" className="amenities-section">
+          <div className="section-container">
+            <h2 className="section-title">{t('amenities')}</h2>
+            
+            <div className="amenities-grid">
+              {amenitiesData.map((amenity, index) => (
+                <div key={index} className="amenity-card">
+                  <amenity.icon className="amenity-icon" size={48} />
+                  <h3>{t(amenity.key)}</h3>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Contact Section */}
-      <section className="contact-section">
-        <div className="section-container">
-          <h2 className="section-title">{t('contact')}</h2>
-          
-          <div className="contact-grid">
-            <div className="contact-card">
-              <Phone className="contact-icon" />
-              <h3>Telefone</h3>
-              <p>+55 48 9999-9999</p>
+        {/* Contact Section */}
+        <section id="contact" className="contact-section">
+          <div className="section-container">
+            <h2 className="section-title">{t('contact')}</h2>
+            
+            <div className="contact-grid">
+              <div className="contact-card">
+                <Phone className="contact-icon" size={32} />
+                <h3>Telefone</h3>
+                <p>+55 48 9999-9999</p>
+              </div>
+              <div className="contact-card">
+                <Mail className="contact-icon" size={32} />
+                <h3>E-mail</h3>
+                <p>contato@villasunshine.com</p>
+              </div>
+              <div className="contact-card">
+                <MapPin className="contact-icon" size={32} />
+                <h3>Localização</h3>
+                <p>Florianópolis, SC</p>
+              </div>
             </div>
-            <div className="contact-card">
-              <Mail className="contact-icon" />
-              <h3>E-mail</h3>
-              <p>contato@villasunshine.com</p>
-            </div>
-            <div className="contact-card">
-              <MapPin className="contact-icon" />
-              <h3>Localização</h3>
-              <p>Florianópolis, SC</p>
+
+            <div className="contact-cta">
+              <button className="cta-button">
+                {t('bookNow')}
+              </button>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer usando o componente existente */}
-      <Footer
-        brandName={t('brand')}
-        copyrightText={`© 2024 ${t('brand')}. Todos os direitos reservados.`}
-      />
+        {/* Footer */}
+        <Footer
+          brandName={t('brand')}
+          copyrightText={`© 2024 ${t('brand')}. Todos os direitos reservados.`}
+        />
+      </div>
 
       <style jsx>{`
         .villa-homepage {
           min-height: 100vh;
           background: white;
+          font-family: system-ui, -apple-system, sans-serif;
         }
 
         .hero-section {
           background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
-          padding: 80px 20px;
-          min-height: 80vh;
+          padding: 100px 20px 80px;
+          min-height: 90vh;
           display: flex;
           align-items: center;
         }
@@ -292,7 +349,7 @@ export default function HomePage() {
           font-weight: bold;
           color: #111827;
           margin-bottom: 24px;
-          line-height: 1.2;
+          line-height: 1.1;
         }
 
         .hero-description {
@@ -328,6 +385,48 @@ export default function HomePage() {
           box-shadow: 0 8px 15px rgba(0,0,0,0.2);
         }
 
+        .image-placeholder {
+          background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+          border-radius: 16px;
+          padding: 40px;
+          color: white;
+          box-shadow: 0 20px 25px rgba(0,0,0,0.15);
+          height: 400px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .image-content {
+          text-align: center;
+        }
+
+        .image-content h3 {
+          font-size: 1.75rem;
+          font-weight: bold;
+          margin-bottom: 12px;
+        }
+
+        .image-content p {
+          color: #dbeafe;
+          margin-bottom: 24px;
+          font-size: 1.1rem;
+        }
+
+        .features-mini {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          font-size: 0.95rem;
+        }
+
+        .features-mini span {
+          background: rgba(255,255,255,0.1);
+          padding: 8px 12px;
+          border-radius: 6px;
+          backdrop-filter: blur(10px);
+        }
+
         .section-container {
           max-width: 1200px;
           margin: 0 auto;
@@ -360,18 +459,19 @@ export default function HomePage() {
         .amenities-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 24px;
+          gap: 32px;
           max-width: 800px;
           margin: 0 auto;
         }
 
         .amenity-card {
           background: white;
-          padding: 32px 24px;
+          padding: 40px 24px;
           border-radius: 12px;
           text-align: center;
           box-shadow: 0 1px 3px rgba(0,0,0,0.1);
           transition: all 0.3s ease;
+          border: 1px solid #e5e7eb;
         }
 
         .amenity-card:hover {
@@ -380,10 +480,9 @@ export default function HomePage() {
         }
 
         .amenity-icon {
-          width: 48px;
-          height: 48px;
           color: #2563eb;
           margin: 0 auto 16px;
+          display: block;
         }
 
         .amenity-card h3 {
@@ -408,7 +507,7 @@ export default function HomePage() {
           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
           gap: 32px;
           max-width: 800px;
-          margin: 0 auto;
+          margin: 0 auto 48px;
         }
 
         .contact-card {
@@ -419,10 +518,9 @@ export default function HomePage() {
         }
 
         .contact-icon {
-          width: 48px;
-          height: 48px;
           color: #60a5fa;
           margin: 0 auto 16px;
+          display: block;
         }
 
         .contact-card h3 {
@@ -435,6 +533,11 @@ export default function HomePage() {
         .contact-card p {
           color: #60a5fa;
           margin: 0;
+          font-size: 0.95rem;
+        }
+
+        .contact-cta {
+          text-align: center;
         }
 
         @media (max-width: 768px) {
@@ -464,8 +567,18 @@ export default function HomePage() {
           .section-title {
             font-size: 2rem;
           }
+
+          .image-placeholder {
+            height: 300px;
+            padding: 24px;
+          }
+
+          .features-mini {
+            grid-template-columns: 1fr;
+            gap: 8px;
+          }
         }
       `}</style>
-    </div>
+    </>
   );
 }
