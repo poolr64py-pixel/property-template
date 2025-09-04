@@ -103,7 +103,7 @@ export default function VillaSunshine() {
       margin: 0,
       padding: 0,
       width: '100%',
-      overflowX: 'hidden',
+      overflowX: 'hidden' as const,
       backgroundColor: 'white'
     },
     header: {
