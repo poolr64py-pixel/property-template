@@ -87,7 +87,6 @@ const translations = {
   }
 };
 
-// Dados da propriedade com TODAS as propriedades obrigatórias
 const propertyData = {
   id: 'villa-sunshine-1',
   name: 'Villa Sunshine',
@@ -246,127 +245,127 @@ export default function HomePage() {
   ];
 
   return (
-    <>
-      <div className="villa-homepage">
-        <Header
-          brandName={t('brand')}
-          currentLocale={currentLocale}
-          onLanguageChange={setCurrentLocale}
-          navigationItems={navigationItems}
-          showLanguageSelector={true}
-        />
+    <div className="villa-homepage">
+      <Header
+        brandName={t('brand')}
+        currentLocale={currentLocale}
+        onLanguageChange={setCurrentLocale}
+        navigationItems={navigationItems}
+        showLanguageSelector={true}
+      />
 
-        <section id="hero" className="hero-section">
-          <div className="hero-container">
-            <div className="hero-content">
-              <div className="hero-text">
-                <h1 className="hero-title">{t('hero')}</h1>
-                <p className="hero-description">{t('heroDesc')}</p>
-                <p className="hero-price">{t('fromPrice')}</p>
-                <button 
-                  className="cta-button"
-                  onClick={() => {
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  {t('bookNow')}
-                </button>
-              </div>
-              
-              <div className="hero-image">
-                <div className="image-placeholder">
-                  <div className="image-content">
-                    <h3>{t('brand')}</h3>
-                    <p>{t('tagline')}</p>
-                    <div className="features-mini">
-                      <span>🏠 4 Quartos</span>
-                      <span>🚿 3 Banheiros</span>
-                      <span>👥 8 Pessoas</span>
-                      <span>📐 250m²</span>
-                    </div>
+      <section id="hero" className="hero-section">
+        <div className="hero-container">
+          <div className="hero-content">
+            <div className="hero-text">
+              <h1 className="hero-title">{t('hero')}</h1>
+              <p className="hero-description">{t('heroDesc')}</p>
+              <p className="hero-price">{t('fromPrice')}</p>
+              <button 
+                className="cta-button"
+                onClick={() => {
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                {t('bookNow')}
+              </button>
+            </div>
+            
+            <div className="hero-image">
+              <div className="image-placeholder">
+                <div className="image-content">
+                  <h3>{t('brand')}</h3>
+                  <p>{t('tagline')}</p>
+                  <div className="features-mini">
+                    <span>🏠 4 Quartos</span>
+                    <span>🚿 3 Banheiros</span>
+                    <span>👥 8 Pessoas</span>
+                    <span>📐 250m²</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="property-showcase">
-          <div className="section-container">
-            <h2 className="section-title">Nossa Villa</h2>
-            
-            <div className="property-card-container">
-              <PropertyCard
-                property={propertyData}
-                content={propertyContent[currentLocale]}
-                locale={currentLocale}
-                heroImage="/images/villa-main.jpg"
-                variant="featured"
-                className="featured-property"
-                onClick={() => {
-                  console.log('Property clicked');
-                }}
-              />
+      <section className="property-showcase">
+        <div className="section-container">
+          <h2 className="section-title">Nossa Villa</h2>
+          
+          <div className="property-card-container">
+            <PropertyCard
+              property={propertyData}
+              content={propertyContent[currentLocale]}
+              locale={currentLocale}
+              heroImage="/images/hero.jpg"
+              variant="featured"
+              className="featured-property"
+              onClick={() => {
+                console.log('Property clicked');
+              }}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="amenities" className="amenities-section">
+        <div className="section-container">
+          <h2 className="section-title">{t('amenities')}</h2>
+          
+          <div className="amenities-grid">
+            {amenitiesData.map((amenity, index) => (
+              <div key={index} className="amenity-card">
+                <amenity.icon className="amenity-icon" size={48} />
+                <h3>{t(amenity.key)}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" className="contact-section">
+        <div className="section-container">
+          <h2 className="section-title">{t('contact')}</h2>
+          
+          <div className="contact-grid">
+            <div className="contact-card">
+              <Phone className="contact-icon" size={32} />
+              <h3>Telefone</h3>
+              <p>+55 48 9999-9999</p>
+            </div>
+            <div className="contact-card">
+              <Mail className="contact-icon" size={32} />
+              <h3>E-mail</h3>
+              <p>contato@villasunshine.com</p>
+            </div>
+            <div className="contact-card">
+              <MapPin className="contact-icon" size={32} />
+              <h3>Localização</h3>
+              <p>Florianópolis, SC</p>
             </div>
           </div>
-        </section>
 
-        <section id="amenities" className="amenities-section">
-          <div className="section-container">
-            <h2 className="section-title">{t('amenities')}</h2>
-            
-            <div className="amenities-grid">
-              {amenitiesData.map((amenity, index) => (
-                <div key={index} className="amenity-card">
-                  <amenity.icon className="amenity-icon" size={48} />
-                  <h3>{t(amenity.key)}</h3>
-                </div>
-              ))}
-            </div>
+          <div className="contact-cta">
+            <button className="cta-button">
+              {t('bookNow')}
+            </button>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="contact" className="contact-section">
-          <div className="section-container">
-            <h2 className="section-title">{t('contact')}</h2>
-            
-            <div className="contact-grid">
-              <div className="contact-card">
-                <Phone className="contact-icon" size={32} />
-                <h3>Telefone</h3>
-                <p>+55 48 9999-9999</p>
-              </div>
-              <div className="contact-card">
-                <Mail className="contact-icon" size={32} />
-                <h3>E-mail</h3>
-                <p>contato@villasunshine.com</p>
-              </div>
-              <div className="contact-card">
-                <MapPin className="contact-icon" size={32} />
-                <h3>Localização</h3>
-                <p>Florianópolis, SC</p>
-              </div>
-            </div>
-
-            <div className="contact-cta">
-              <button className="cta-button">
-                {t('bookNow')}
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <Footer
-          brandName={t('brand')}
-          copyrightText={`© 2024 ${t('brand')}. Todos os direitos reservados.`}
-        />
-      </div>
+      <Footer
+        brandName={t('brand')}
+        copyrightText={`© 2024 ${t('brand')}. Todos os direitos reservados.`}
+      />
 
       <style jsx>{`
         .villa-homepage {
           min-height: 100vh;
           background: white;
           font-family: system-ui, -apple-system, sans-serif;
+          opacity: 1;
+          visibility: visible;
         }
 
         .hero-section {
@@ -629,6 +628,6 @@ export default function HomePage() {
           }
         }
       `}</style>
-    </>
+    </div>
   );
 }
