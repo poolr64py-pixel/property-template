@@ -4,12 +4,10 @@ import { useState } from 'react';
 import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 import { PropertyCard } from '../components/property/PropertyCard';
-import { OptimizedImage } from '../components/ui/OptimizedImage';
 import { MapPin, Wifi, Car, Coffee, Waves, Phone, Mail } from 'lucide-react';
 
 type Locale = 'pt' | 'en' | 'es' | 'de';
 
-// Traduções
 const translations = {
   pt: {
     brand: 'Villa Sunshine',
@@ -89,7 +87,7 @@ const translations = {
   }
 };
 
-// Dados da propriedade com todas as propriedades obrigatórias
+// Dados da propriedade com TODAS as propriedades obrigatórias
 const propertyData = {
   id: 'villa-sunshine-1',
   name: 'Villa Sunshine',
@@ -109,6 +107,7 @@ const propertyData = {
     bedrooms: 4,
     bathrooms: 3,
     area: 250,
+    buildYear: 2020,
     pool: true,
     garden: true,
     parking: true
@@ -119,7 +118,6 @@ const propertyData = {
   }
 };
 
-// Conteúdo da propriedade para cada idioma
 const propertyContent = {
   pt: {
     title: 'Villa Sunshine - Vista para o Mar',
@@ -192,7 +190,6 @@ export default function HomePage() {
   return (
     <>
       <div className="villa-homepage">
-        {/* Header */}
         <Header
           brandName={t('brand')}
           currentLocale={currentLocale}
@@ -201,7 +198,6 @@ export default function HomePage() {
           showLanguageSelector={true}
         />
 
-        {/* Hero Section */}
         <section id="hero" className="hero-section">
           <div className="hero-container">
             <div className="hero-content">
@@ -237,7 +233,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Property Card Section */}
         <section className="property-showcase">
           <div className="section-container">
             <h2 className="section-title">Nossa Villa</h2>
@@ -258,7 +253,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Amenities Section */}
         <section id="amenities" className="amenities-section">
           <div className="section-container">
             <h2 className="section-title">{t('amenities')}</h2>
@@ -274,7 +268,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Contact Section */}
         <section id="contact" className="contact-section">
           <div className="section-container">
             <h2 className="section-title">{t('contact')}</h2>
@@ -305,7 +298,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Footer */}
         <Footer
           brandName={t('brand')}
           copyrightText={`© 2024 ${t('brand')}. Todos os direitos reservados.`}
