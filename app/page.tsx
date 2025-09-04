@@ -99,22 +99,22 @@ export default function VillaSunshine() {
 
   const styles = {
     container: {
-      fontFamily: 'system-ui, sans-serif',
-      margin: 0,
-      padding: 0,
-      width: '100%',
-      overflowX: 'hidden' as const,
-      backgroundColor: 'white'
-    },
+  fontFamily: 'system-ui, sans-serif',
+  margin: 0,
+  padding: 0,
+  width: '100%',
+  overflowX: 'hidden' as const,
+  backgroundColor: 'white'
+},
     header: {
-      backgroundColor: 'white',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-      borderBottom: '1px solid #e5e7eb',
-      position: 'sticky',
-      top: 0,
-      zIndex: 50,
-      width: '100%'
-    },
+  backgroundColor: 'white',
+  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+  borderBottom: '1px solid #e5e7eb',
+  position: 'sticky' as const,
+  top: 0,
+  zIndex: 50,
+  width: '100%'
+},
     headerContent: {
       maxWidth: '1280px',
       margin: '0 auto',
